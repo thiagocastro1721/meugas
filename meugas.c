@@ -3,6 +3,7 @@
 int main()
 {
 	printf("alterado.\n");
+	//mudança feita no codeblocks para a branch calculadora
 
     unsigned long i, j, dias_do_mes, mes_do_ano, dia_inicial, mes_inicial, ano_inicial, dia_final, mes_final, ano_final;
     unsigned long ano, mes, primeiro_dia_do_mes, cont_dias = 0, k, dias_a_somar, opcao;
