@@ -1,19 +1,32 @@
-git principais comandos
+﻿git principais comandos
+
+
 
 
 mudar branch
+
 git checkout <branch>
+
 exemplo
+
 git checkout calculadora_de_datas
 
 
+
+
 adicionar todos os aquivos
+
 git add --all
+
 
 
 Se aparecer
 Everything up-to-date
+
 está tudo ok.
 
+
+
 ver status e ver a branch atual
+
 git status
