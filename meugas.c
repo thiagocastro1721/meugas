@@ -1,23 +1,19 @@
 #include <stdio.h>
 
-int main()
+int main ()
 {
-	printf("alterado.\n");
-	//mudança feita no codeblocks para a branch calculadora
-	//alteração na calculadora
+    unsigned long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_somar = 0, opcao = 3;
 
-
-    unsigned long i, j, dias_do_mes, mes_do_ano, dia_inicial, mes_inicial, ano_inicial, dia_final, mes_final, ano_final;
-    unsigned long ano, mes, primeiro_dia_do_mes, cont_dias = 0, k, dias_a_somar, opcao;
-
+    //declarando funcoes
+    int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_somar, unsigned long *popcao);
     void ler_arquivo_gas_txt();
-    ler_arquivo_gas_txt();
 
     printf("Calculadora de datas.\n");
     printf("Escolha a operacao que deseja realizar.\n");
     printf("Digite 1 para calcular a diferenca em dias entre duas datas.\n");
     printf("Digite 2 para adcionar dias apartir de uma data especifica.\n");
     scanf("%lu", &opcao);
+
     if(opcao == 1)
     {
          printf("Calcular diferencas entre duas datas em dias.\n");
@@ -27,7 +23,7 @@ int main()
          printf("Digite a data final.\n");
          scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
     }
-    else
+    else if(opcao == 2)
     {
         printf("Adicionar dias a uma data especifica.\n");
         printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
@@ -41,45 +37,58 @@ int main()
         ano_final = 9999999;
     }
 
+    //chamando a funcao que calcula datas
+    calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_somar, &opcao);
+    ler_arquivo_gas_txt();
 
 
+    return 0;
+}
+
+int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_somar, unsigned long *popcao)
+{
+    unsigned long i, j, dias_do_mes, mes_do_ano, dia_da_semana = 0, opcaozero = 0;
+    unsigned long ano, mes, primeiro_dia_do_mes, cont_dias = 0, k;
+    //variaveis criadas para o calcula do dia da semana.
+    //todas elas tem o final _s.
+    unsigned long dia_inicial_s, mes_inicial_s, ano_inicial_s, dia_final_s, mes_final_s, ano_final_s, dias_a_somar_s, opcaozero_s;
+
+    // primeiro definir uma funcao que calcula void dia_da_semana();
     /*Fazer verificacao de entrada de dados*/
 
-    ano = ano_inicial;
-    primeiro_dia_do_mes = dia_inicial;
+    ano = *pano_inicial;
+    primeiro_dia_do_mes = *pdia_inicial;
 
-
-
-    for(i = ano; i <= ano_final; i++)
+    for(i = ano; i <= *pano_final; i++)
     {
 
-        if(i != ano_final)
+        if(i != *pano_final)
         {
             mes = 12;
         }
         else
         {
-            mes = mes_final;
+            mes = *pmes_final;
         }
-        for(j = mes_inicial; j <= mes; j++)
+        for(j = *pmes_inicial; j <= mes; j++)
         {
             if(j == 1)
             {
 
                 dias_do_mes = 31;
                  /*Condicao para nao ir para o proximo mes.*/
-                if (j == mes_final && i == ano_final)
+                if (j == *pmes_final && i == *pano_final)
                 {
                     j = 13;
                     primeiro_dia_do_mes = 0;
                     dias_do_mes = 0;
-                    cont_dias = cont_dias + (dia_final - dia_inicial);
+                    cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                 }
                 else
                 {
                     if (cont_dias == 0)
                     {
-                        primeiro_dia_do_mes = dia_inicial;
+                        primeiro_dia_do_mes = *pdia_inicial;
                     }
                     else
                     {
@@ -103,18 +112,18 @@ int main()
                     }
 
                     /*Condicao para nao ir para o proximo mes.*/
-                    if (j == mes_final && i == ano_final)
+                    if (j == *pmes_final && i == *pano_final)
                     {
                         j = 13;
                         primeiro_dia_do_mes = 0;
                         dias_do_mes = 0;
-                        cont_dias = cont_dias + (dia_final - dia_inicial);
+                        cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                     }
                     else
                     {
                         if (cont_dias == 0)
                         {
-                            primeiro_dia_do_mes = dia_inicial;
+                            primeiro_dia_do_mes = *pdia_inicial;
                         }
                         else
                         {
@@ -129,18 +138,18 @@ int main()
 
                         dias_do_mes = 31;
                         /*Condicao para nao ir para o proximo mes.*/
-                        if (j == mes_final && i == ano_final)
+                        if (j == *pmes_final && i == *pano_final)
                         {
                             j = 13;
                             primeiro_dia_do_mes = 0;
                             dias_do_mes = 0;
-                            cont_dias = cont_dias + (dia_final - dia_inicial);
+                            cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                         }
                         else
                         {
                             if (cont_dias == 0)
                             {
-                                primeiro_dia_do_mes = dia_inicial;
+                                primeiro_dia_do_mes = *pdia_inicial;
                             }
                             else
                             {
@@ -155,24 +164,24 @@ int main()
 
                             dias_do_mes = 30;
                              /*Condicao para nao ir para o proximo mes.*/
-                            if (j == mes_final && i == ano_final)
+                            if (j == *pmes_final && i == *pano_final)
                             {
                                 j = 13;
                                 primeiro_dia_do_mes = 0;
                                 dias_do_mes = 0;
-                                cont_dias = cont_dias + (dia_final - dia_inicial);
+                                cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                             }
                             else
                             {
                                 if (cont_dias == 0)
                                 {
-                                    primeiro_dia_do_mes = dia_inicial;
+                                    primeiro_dia_do_mes = *pdia_inicial;
                                 }
                                 else
                                 {
                                     if (cont_dias == 0)
                                     {
-                                        primeiro_dia_do_mes = dia_inicial;
+                                        primeiro_dia_do_mes = *pdia_inicial;
                                     }
                                     else
                                     {
@@ -188,24 +197,24 @@ int main()
 
                                 dias_do_mes = 31;
                                  /*Condicao para nao ir para o proximo mes.*/
-                                if (j == mes_final && i == ano_final)
+                                if (j == *pmes_final && i == *pano_final)
                                 {
                                     j = 13;
                                     primeiro_dia_do_mes = 0;
                                     dias_do_mes = 0;
-                                    cont_dias = cont_dias + (dia_final - dia_inicial);
+                                    cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                 }
                                 else
                                 {
                                     if (cont_dias == 0)
                                     {
-                                        primeiro_dia_do_mes = dia_inicial;
+                                        primeiro_dia_do_mes = *pdia_inicial;
                                     }
                                     else
                                     {
                                         if (cont_dias == 0)
                                         {
-                                            primeiro_dia_do_mes = dia_inicial;
+                                            primeiro_dia_do_mes = *pdia_inicial;
                                         }
                                         else
                                         {
@@ -221,24 +230,24 @@ int main()
 
                                     dias_do_mes = 30;
                                      /*Condicao para nao ir para o proximo mes.*/
-                                    if (j == mes_final && i == ano_final)
+                                    if (j == *pmes_final && i == *pano_final)
                                     {
                                         j = 13;
                                         primeiro_dia_do_mes = 0;
                                         dias_do_mes = 0;
-                                        cont_dias = cont_dias + (dia_final - dia_inicial);
+                                        cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                     }
                                     else
                                     {
                                         if (cont_dias == 0)
                                         {
-                                            primeiro_dia_do_mes = dia_inicial;
+                                            primeiro_dia_do_mes = *pdia_inicial;
                                         }
                                         else
                                         {
                                             if (cont_dias == 0)
                                             {
-                                                primeiro_dia_do_mes = dia_inicial;
+                                                primeiro_dia_do_mes = *pdia_inicial;
                                             }
                                             else
                                             {
@@ -254,24 +263,24 @@ int main()
 
                                         dias_do_mes = 31;
                                          /*Condicao para nao ir para o proximo mes.*/
-                                        if (j == mes_final && i == ano_final)
+                                        if (j == *pmes_final && i == *pano_final)
                                         {
                                             j = 13;
                                             primeiro_dia_do_mes = 0;
                                             dias_do_mes = 0;
-                                            cont_dias = cont_dias + (dia_final - dia_inicial);
+                                            cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                         }
                                         else
                                         {
                                             if (cont_dias == 0)
                                             {
-                                                primeiro_dia_do_mes = dia_inicial;
+                                                primeiro_dia_do_mes = *pdia_inicial;
                                             }
                                             else
                                             {
                                                 if (cont_dias == 0)
                                                 {
-                                                    primeiro_dia_do_mes = dia_inicial;
+                                                    primeiro_dia_do_mes = *pdia_inicial;
                                                 }
                                                 else
                                                 {
@@ -287,18 +296,18 @@ int main()
 
                                             dias_do_mes = 31;
                                              /*Condicao para nao ir para o proximo mes.*/
-                                            if (j == mes_final && i == ano_final)
+                                            if (j == *pmes_final && i == *pano_final)
                                             {
                                                 j = 13;
                                                 primeiro_dia_do_mes = 0;
                                                 dias_do_mes = 0;
-                                                cont_dias = cont_dias + (dia_final - dia_inicial);
+                                                cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                             }
                                             else
                                             {
                                                 if (cont_dias == 0)
                                                 {
-                                                    primeiro_dia_do_mes = dia_inicial;
+                                                    primeiro_dia_do_mes = *pdia_inicial;
                                                 }
                                                 else
                                                 {
@@ -313,18 +322,18 @@ int main()
 
                                                 dias_do_mes = 30;
                                                  /*Condicao para nao ir para o proximo mes.*/
-                                                if (j == mes_final && i == ano_final)
+                                                if (j == *pmes_final && i == *pano_final)
                                                 {
                                                     j = 13;
                                                     primeiro_dia_do_mes = 0;
                                                     dias_do_mes = 0;
-                                                    cont_dias = cont_dias + (dia_final - dia_inicial);
+                                                    cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                                 }
                                                 else
                                                 {
                                                     if (cont_dias == 0)
                                                     {
-                                                        primeiro_dia_do_mes = dia_inicial;
+                                                        primeiro_dia_do_mes = *pdia_inicial;
                                                     }
                                                     else
                                                     {
@@ -339,18 +348,18 @@ int main()
 
                                                     dias_do_mes = 31;
                                                      /*Condicao para nao ir para o proximo mes.*/
-                                                    if (j == mes_final && i == ano_final)
+                                                    if (j == *pmes_final && i == *pano_final)
                                                     {
                                                         j = 13;
                                                         primeiro_dia_do_mes = 0;
                                                         dias_do_mes = 0;
-                                                        cont_dias = cont_dias + (dia_final - dia_inicial);
+                                                        cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                                     }
                                                     else
                                                     {
                                                         if (cont_dias == 0)
                                                         {
-                                                            primeiro_dia_do_mes = dia_inicial;
+                                                            primeiro_dia_do_mes = *pdia_inicial;
                                                         }
                                                         else
                                                         {
@@ -365,18 +374,18 @@ int main()
 
                                                         dias_do_mes = 30;
                                                          /*Condicao para nao ir para o proximo mes.*/
-                                                        if (j == mes_final && i == ano_final)
+                                                        if (j == *pmes_final && i == *pano_final)
                                                         {
                                                             j = 13;
                                                             primeiro_dia_do_mes = 0;
                                                             dias_do_mes = 0;
-                                                            cont_dias = cont_dias + (dia_final - dia_inicial);
+                                                            cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                                         }
                                                         else
                                                         {
                                                             if (cont_dias == 0)
                                                             {
-                                                                primeiro_dia_do_mes = dia_inicial;
+                                                                primeiro_dia_do_mes = *pdia_inicial;
                                                             }
                                                             else
                                                             {
@@ -391,18 +400,18 @@ int main()
 
                                                             dias_do_mes = 31;
                                                              /*Condicao para nao ir para o proximo mes.*/
-                                                            if (j == mes_final && i == ano_final)
+                                                            if (j == *pmes_final && i == *pano_final)
                                                             {
                                                                 j = 13;
                                                                 primeiro_dia_do_mes = 0;
                                                                 dias_do_mes = 0;
-                                                                cont_dias = cont_dias + (dia_final - dia_inicial);
+                                                                cont_dias = cont_dias + (*pdia_final - *pdia_inicial);
                                                             }
                                                             else
                                                             {
                                                                 if (cont_dias == 0)
                                                                 {
-                                                                    primeiro_dia_do_mes = dia_inicial;
+                                                                    primeiro_dia_do_mes = *pdia_inicial;
                                                                 }
                                                                 else
                                                                 {
@@ -410,7 +419,7 @@ int main()
                                                                 }
                                                             }
 
-                                                            mes_inicial = 1;
+                                                            *pmes_inicial = 1;
 
                                                         }
                                                     }
@@ -428,35 +437,102 @@ int main()
             for(k = primeiro_dia_do_mes; k < dias_do_mes; k++)
             {
                 cont_dias++;
-                if (opcao == 2 && (dias_a_somar == cont_dias))
+                if (*popcao == 2 && (*pdias_a_somar == cont_dias))
                 {
-                    dia_final = k + 1;
-                    mes_final = j;
-                    ano_final = i;
+                    *pdia_final = k + 1;
+                    *pmes_final = j;
+                    *pano_final = i;
 
                     k = dias_do_mes + 1;
                     j = 13;
-                    i = ano_final + 1;
+                    i = *pano_final + 1;
 
                 }
             }
 
-            dia_inicial = 0;
+            *pdia_inicial = 0;
 
         }
 
     }
 
-    if (opcao == 1)
+
+
+    //imprindo resultado
+    if (*popcao == 0)
+    {
+        return (int)cont_dias;
+    }
+    else if (*popcao == 1)
     {
          printf("\nDiferenca em dias = %lu\n" ,cont_dias);
+         return 0;
     }
-    else
+    else if (*popcao == 2)
     {
-        printf("\nData %02lu/%02lu/%lu\n" ,dia_final, mes_final, ano_final);
+        //calculando dia da semana.
+        //o dia da semana da data 21/05/1905 eh domingo.
+        //vamos chamar a funcao calculadora_de_datas e calcular a diferenca em dias ate a data inicial.
+        //o resto da divisao entre os dias e 7 determinarao o dia da semana.
+        //vamos passar outras variaveis para funcao afim de nao alterar o valor original.
+        //o final _s identifica as variaveis que foram alteradas para o calculo do dia da semana.
+        dia_final_s = *pdia_final;
+        mes_final_s = *pmes_final;
+        ano_final_s = *pano_final;
+        dia_inicial_s = 21;
+        mes_inicial_s = 5;
+        ano_inicial_s = 1905;
+        dias_a_somar_s = 0;
+
+        dia_da_semana = (calculadora_de_datas(&dia_inicial_s, &mes_inicial_s, &ano_inicial_s, &dia_final_s, &mes_final_s, &ano_final_s, &dias_a_somar_s, &opcaozero_s) % 7);
+
+        /*
+        Na data Domingo 21/05/1905
+        Pegamos o dia da data e fazemos o seguinte calculo:
+        21 % 7 = 0 (resto da divisao entre 21 e 7 eh igual a 0)
+        Entao toda vez que o dia % 7 = 0 sera domingo.
+        Se dia % 7 = 1 sera Segunda-feira.
+        Se dia % 7 = 2 sera Terca_feira.
+        Se dia % 7 = 6 sera Sabado.
+        Assim por diante.
+        Isto vale para qualquer data.
+        */
+
+        //dia da semana
+        if(dia_da_semana == 0)
+        {
+            printf("\nDomingo ");
+        }
+        else if(dia_da_semana == 1)
+        {
+            printf("\nSegunda-feira ");
+        }
+        else if(dia_da_semana == 2)
+        {
+            printf("\nTerca-feira ");
+        }
+        else if(dia_da_semana == 3)
+        {
+            printf("\nQuarta-feira ");
+        }
+        else if(dia_da_semana == 4)
+        {
+            printf("\nQuinta-feira ");
+        }
+        else if(dia_da_semana == 5)
+        {
+            printf("\nSexta-feira ");
+        }
+        else if(dia_da_semana == 6)
+        {
+            printf("\nSabado ");
+        }
+
+
+        printf(" %02lu/%02lu/%lu\n" ,*pdia_final, *pmes_final, *pano_final);
+        return 0;
     }
 
-    return 0;
 }
 
 
@@ -476,8 +552,8 @@ int main()
     void ler_arquivo_gas_txt()
     {
         printf("\nFUNCAO LER_ARQUIVO_GAS_TXT.\n");
-        unsigned long i, j,
-        unsigned long id, data, dia_inicial, mes_inicial, ano_inicial;
+        unsigned long i, j;
+        unsigned long id, data, dia_inicial, mes_inicial, ano_inicial,texto;
         char local_da_compra[10];
 
 
@@ -504,9 +580,9 @@ int main()
         /*Preenchendo a matriz com os valores do arquivo.*/
         for(i = 0; i < 1; i++)
         {
-            fscanf(file, "ID: %s.\n", &texto);
+            fscanf(file, "ID: %s.\n", &local_da_compra);
 
-            printf("\nTEXTO: %s\n", texto);
+            printf("\nTEXTO: %s\n", local_da_compra);
         }
 
         /*fechando o arquivo*/
