@@ -2,16 +2,18 @@
 
 int main ()
 {
-    unsigned long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_somar = 0, opcao = 3;
+    unsigned long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_calcular = 0, opcao = 3;
 
     //declarando funcoes
-    int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_somar, unsigned long *popcao);
+    int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
     void ler_arquivo_gas_txt();
 
     printf("Calculadora de datas.\n");
     printf("Escolha a operacao que deseja realizar.\n");
     printf("Digite 1 para calcular a diferenca em dias entre duas datas.\n");
-    printf("Digite 2 para adcionar dias apartir de uma data especifica.\n");
+    printf("Digite 2 para adcionar dias apartir de uma data.\n");
+    printf("Digite 3 para subtrair dias apartir de uma data.\n");
+    printf("Digite 4 para calcular o dia da semana de uma data.\n");
     scanf("%lu", &opcao);
 
     if(opcao == 1)
@@ -22,6 +24,9 @@ int main ()
          scanf("%lu/%lu/%lu", &dia_inicial, &mes_inicial, &ano_inicial);
          printf("Digite a data final.\n");
          scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+
+         //chamando a funcao que calcula datas
+         calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
     }
     else if(opcao == 2)
     {
@@ -30,28 +35,64 @@ int main ()
         printf("Digite a data inicial.\n");
         scanf("%lu/%lu/%lu", &dia_inicial, &mes_inicial, &ano_inicial);
         printf("Digite os dias que serao acrescentados.\n");
-        scanf("%lu", &dias_a_somar);
+        scanf("%lu", &dias_a_calcular);
 
         dia_final = 28;
         mes_final = 12;
         ano_final = 9999999;
+
+        //chamando a funcao que calcula datas
+        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+    }
+    else if(opcao == 3)
+    {
+        printf("subtrair dias de uma data.\n");
+        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+        printf("Digite a data.\n");
+        scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+        printf("Digite os dias que serao subtraidos.\n");
+        scanf("%lu", &dias_a_calcular);
+        dia_inicial = 21;
+        mes_inicial = 5;
+        ano_inicial = 1600;
+
+        //chamando a funcao que calcula datas
+        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+    }
+    else if(opcao == 4)
+    {
+        printf("Calcular o dia da semana de uma data.\n");
+        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+        printf("Digite a data.\n");
+        scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+
+        dia_inicial = 21;
+        mes_inicial = 5;
+        ano_inicial = 1600;
+        dias_a_calcular = 0;
+        opcao = 2;
+
+        //chamando a funcao que calcula datas
+        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
     }
 
-    //chamando a funcao que calcula datas
-    calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_somar, &opcao);
+
     ler_arquivo_gas_txt();
 
 
     return 0;
 }
 
-int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_somar, unsigned long *popcao)
+int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao)
 {
     unsigned long i, j, dias_do_mes, mes_do_ano, dia_da_semana = 0, opcaozero = 0;
     unsigned long ano, mes, primeiro_dia_do_mes, cont_dias = 0, k;
+    unsigned long maiores_dias, menores_dias, x_dias;
     //variaveis criadas para o calcula do dia da semana.
     //todas elas tem o final _s.
-    unsigned long dia_inicial_s, mes_inicial_s, ano_inicial_s, dia_final_s, mes_final_s, ano_final_s, dias_a_somar_s, opcaozero_s;
+    unsigned long dia_inicial_s, mes_inicial_s, ano_inicial_s, dia_final_s, mes_final_s, ano_final_s, dias_a_calcular_s, opcaozero_s = 0;
+    unsigned long dia_inicial_sub, mes_inicial_sub, ano_inicial_sub, dia_final_sub, mes_final_sub, ano_final_sub, dias_a_calcular_sub, opcao_sub = 0;
+    unsigned long dia_inicial_md, mes_inicial_md, ano_inicial_md, dia_final_md, mes_final_md, ano_final_md, dias_a_calcular_md, opcao_md;
 
     // primeiro definir uma funcao que calcula void dia_da_semana();
     /*Fazer verificacao de entrada de dados*/
@@ -437,7 +478,7 @@ int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicia
             for(k = primeiro_dia_do_mes; k < dias_do_mes; k++)
             {
                 cont_dias++;
-                if (*popcao == 2 && (*pdias_a_somar == cont_dias))
+                if (*popcao == 2 && (*pdias_a_calcular == cont_dias))
                 {
                     *pdia_final = k + 1;
                     *pmes_final = j;
@@ -471,7 +512,7 @@ int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicia
     else if (*popcao == 2)
     {
         //calculando dia da semana.
-        //o dia da semana da data 21/05/1905 eh domingo.
+        //o dia da semana da data 21/05/1600 eh domingo.
         //vamos chamar a funcao calculadora_de_datas e calcular a diferenca em dias ate a data inicial.
         //o resto da divisao entre os dias e 7 determinarao o dia da semana.
         //vamos passar outras variaveis para funcao afim de nao alterar o valor original.
@@ -481,13 +522,14 @@ int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicia
         ano_final_s = *pano_final;
         dia_inicial_s = 21;
         mes_inicial_s = 5;
-        ano_inicial_s = 1905;
-        dias_a_somar_s = 0;
+        ano_inicial_s = 1600;
+        dias_a_calcular_s = 0;
+        opcaozero_s = 0;
 
-        dia_da_semana = (calculadora_de_datas(&dia_inicial_s, &mes_inicial_s, &ano_inicial_s, &dia_final_s, &mes_final_s, &ano_final_s, &dias_a_somar_s, &opcaozero_s) % 7);
+        dia_da_semana = (calculadora_de_datas(&dia_inicial_s, &mes_inicial_s, &ano_inicial_s, &dia_final_s, &mes_final_s, &ano_final_s, &dias_a_calcular_s, &opcaozero_s) % 7);
 
         /*
-        Na data Domingo 21/05/1905
+        Na data Domingo 21/05/1600
         Pegamos o dia da data e fazemos o seguinte calculo:
         21 % 7 = 0 (resto da divisao entre 21 e 7 eh igual a 0)
         Entao toda vez que o dia % 7 = 0 sera domingo.
@@ -530,6 +572,45 @@ int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicia
 
 
         printf(" %02lu/%02lu/%lu\n" ,*pdia_final, *pmes_final, *pano_final);
+        return 0;
+    }
+     else if (*popcao == 3)
+    {
+        //maiores_dias, diferenca em dias entre 21/05/1600 e a data digitada pelo usuario.
+        //variaveis alteradas com final _md
+        dia_inicial_md = 21;
+        mes_inicial_md = 5;
+        ano_inicial_md = 1600;
+        dia_final_md = *pdia_final;
+        mes_final_md = *pmes_final;
+        ano_final_md = *pano_final;
+        dias_a_calcular_md = *pdias_a_calcular;
+        opcao_md = 0;
+
+        maiores_dias = calculadora_de_datas(&dia_inicial_md, &mes_inicial_md, &ano_inicial_md, &dia_final_md, &mes_final_md, &ano_final_md, &dias_a_calcular_md, &opcao_md);
+
+        /*menores_dias, diferenca em dias entre a data x (data procurada) e a data digitada pelo usuario.*/
+        /*essa diferenca eh informada diretamente pelo usuario quando o mesmo informa os dias a subtrair.*/
+        menores_dias = *pdias_a_calcular;
+
+        /*x_dias, diferenca entre maiores_dias e menores dias.*/
+        x_dias = maiores_dias - menores_dias;
+
+        /*vamos chamar a funcao calculadora_de_datas para calcular a data 21/05/1600 acrescentando x_dias.
+        *variaveis alteradas para para nao interferir em outros calculos final _sub.
+        */
+        dia_final_sub = 28;
+        mes_final_sub = 12;
+        ano_final_sub = 999999;
+
+        dia_inicial_sub = 21;
+        mes_inicial_sub = 5;
+        ano_inicial_sub = 1600;
+        dias_a_calcular_sub = *pdias_a_calcular;
+        opcao_sub = 2;
+
+        calculadora_de_datas(&dia_inicial_sub, &mes_inicial_sub, &ano_inicial_sub, &dia_final_sub, &mes_final_sub, &ano_final_sub, &x_dias, &opcao_sub);
+
         return 0;
     }
 
