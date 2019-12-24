@@ -1,0 +1,12 @@
+(x)setar uma data remota
+
+(x)calcular maiores_dias, diferenca em dias entre 21/05/1600 e a data digitada pelo usuario.
+
+(x)dias_a_calcular, diferenca em dias entre a data x (data procurada) e a data digitada pelo usuario. essa diferenca eh informada diretamente pelo usuario
+quando o mesmo informa os dias a subtrair.
+
+(x)x_dias, diferenca entre maiores_dias e menores dias.
+
+(x)testar se o programa da erro com datas muito muito distantes
+
+
