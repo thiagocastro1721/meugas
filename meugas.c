@@ -2,11 +2,26 @@
 
 int main ()
 {
-    unsigned long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_calcular = 0, opcao = 3;
+    unsigned long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_calcular = 0, opcao = 0;
 
-    //declarando funcoes
+    /*declarando funcoes*/
     int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
+    void capturar_dados_do_teclado(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
+    void validar_dados(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
     void ler_arquivo_gas_txt();
+
+    //chamando funcoes
+    capturar_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+    validar_dados(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+
+
+    return 0;
+}
+
+void capturar_dados_do_teclado(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao)
+{
+    /*declarando a funcao calculadora de datas*/
+    int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
 
     printf("Calculadora de datas.\n");
     printf("Escolha a operacao que deseja realizar.\n");
@@ -14,74 +29,92 @@ int main ()
     printf("Digite 2 para adcionar dias apartir de uma data.\n");
     printf("Digite 3 para subtrair dias apartir de uma data.\n");
     printf("Digite 4 para calcular o dia da semana de uma data.\n");
-    scanf("%lu", &opcao);
+    scanf("%lu", &*popcao);
 
-    if(opcao == 1)
+    if(*popcao == 1)
     {
          printf("Calcular diferencas entre duas datas em dias.\n");
-         printf("Digite as datas no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+         printf("Digite as datas no formato dd/mm/aaaa exemplo 21/05/1989.\n\n");
          printf("Digite a data inicial.\n");
-         scanf("%lu/%lu/%lu", &dia_inicial, &mes_inicial, &ano_inicial);
+         scanf("%lu/%lu/%lu", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
          printf("Digite a data final.\n");
-         scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+         scanf("%lu/%lu/%lu", &*pdia_final, &*pmes_final, &*pano_final);
 
          //chamando a funcao que calcula datas
-         calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+         calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
-    else if(opcao == 2)
+    else if(*popcao == 2)
     {
         printf("Adicionar dias a uma data especifica.\n");
-        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n\n");
         printf("Digite a data inicial.\n");
-        scanf("%lu/%lu/%lu", &dia_inicial, &mes_inicial, &ano_inicial);
+        scanf("%lu/%lu/%lu", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
         printf("Digite os dias que serao acrescentados.\n");
-        scanf("%lu", &dias_a_calcular);
+        scanf("%lu", &*pdias_a_calcular);
 
-        dia_final = 28;
-        mes_final = 12;
-        ano_final = 9999999;
+        *pdia_final = 28;
+        *pmes_final = 12;
+        *pano_final = 9999999;
 
         //chamando a funcao que calcula datas
-        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+        calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
-    else if(opcao == 3)
+    else if(*popcao == 3)
     {
         printf("subtrair dias de uma data.\n");
-        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n\n");
         printf("Digite a data.\n");
-        scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+        scanf("%lu/%lu/%lu", &*pdia_final, &*pmes_final, &*pano_final);
         printf("Digite os dias que serao subtraidos.\n");
-        scanf("%lu", &dias_a_calcular);
-        dia_inicial = 21;
-        mes_inicial = 5;
-        ano_inicial = 1600;
+        scanf("%lu", &*pdias_a_calcular);
+        *pdia_inicial = 21;
+        *pmes_inicial = 5;
+        *pano_inicial = 1600;
 
         //chamando a funcao que calcula datas
-        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+        calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
-    else if(opcao == 4)
+    else if(*popcao == 4)
     {
         printf("Calcular o dia da semana de uma data.\n");
-        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n");
+        printf("Digite a data no formato dd/mm/aaaa exemplo 21/05/1989.\n\n");
         printf("Digite a data.\n");
-        scanf("%lu/%lu/%lu", &dia_final, &mes_final, &ano_final);
+        scanf("%lu/%lu/%lu", &*pdia_final, &*pmes_final, &*pano_final);
 
-        dia_inicial = 21;
-        mes_inicial = 5;
-        ano_inicial = 1600;
-        dias_a_calcular = 0;
-        opcao = 2;
+        *pdia_inicial = 21;
+        *pmes_inicial = 5;
+        *pano_inicial = 1600;
+        *pdias_a_calcular = 0;
+        *popcao = 2;
 
         //chamando a funcao que calcula datas
-        calculadora_de_datas(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+        calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
 
-
-    ler_arquivo_gas_txt();
-
-
-    return 0;
 }
+
+ void validar_dados(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao)
+ {
+    /*declarando a funcao calculadora de datas*/
+    int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao);
+
+    /*Validando data inicial*/
+    while(erro == 1)
+    {
+        if()
+        
+    }
+    
+    
+    
+     /*Validando opcao*/
+     while(*popcao != 1 && *popcao != 2 && *popcao != 3 && *popcao != 4)
+     {
+         printf("\nOpcao invalida.\n");
+         scanf("%lu", &*popcao);
+     }
+     calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
+ }
 
 int calculadora_de_datas(unsigned long *pdia_inicial, unsigned long *pmes_inicial, unsigned long *pano_inicial, unsigned long *pdia_final, unsigned long *pmes_final, unsigned long *pano_final, unsigned long *pdias_a_calcular, unsigned long *popcao)
 {
