@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 int main ()
@@ -112,18 +113,15 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
          ano_final_r = *pano_inicial;
          dias_a_calcular_r = 0;
          opcao_r = 0;
-
          if( mes_inicial_r == 12)
          {
              mes_final_r = 1;
              ano_final_r = ano_final_r + 1;
          }
-
           //calculo dos anos
          if(*pmes_final > *pmes_inicial)
          {
              cont_anos = *pano_final - *pano_inicial;
-
              //calculando os meses
              if(*pdia_final < *pdia_inicial)
              {
@@ -144,7 +142,6 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
              {
                  cont_anos = *pano_final - *pano_inicial;
              }
-
              //calculando os meses
              if(*pdia_final < *pdia_inicial)
              {
@@ -158,25 +155,17 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
          else
          {
              cont_anos = (*pano_final - *pano_inicial) - 1;
-
              //calculando os meses
              cont_meses = 12 - *pmes_final;
          }
-
          opcao_bissexta = 0;
          printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_r, mes_inicial_r, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, opcao_bissexta);
          quant_anos_bissextos = (calculadora_de_datas(&dia_inicial_r, &mes_inicial_r, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &opcao_bissexta) % 365);
-
          //Vamos chamar a funcao para calcular a diferenca em dias que resta para o calculo das semanas e dos dias.
          dias_remanescentes = (calculadora_de_datas(&dia_inicial_r, &mes_inicial_r, &ano_inicial_r, &dia_final_r, &mes_final_r, &ano_final_r, &dias_a_calcular_r, &opcao_r)) - quant_anos_bissextos;
-
          cont_semanas = dias_remanescentes / 7;
-
          cont_dias = dias_remanescentes % 7;
-
          printf("\n%lu anos; %lu meses; %lu semanas; %lu dias; quant_anos_bi = %lu\n\nano_final = %lu, ano_inical = %lu, mes_final = %lu, mes_inicial = %lu,\ndia_final %lu,dia_inicial = %lu. \n", cont_anos, cont_meses, cont_semanas, cont_dias, quant_anos_bissextos, *pano_final, *pano_inicial, *pmes_final, *pmes_inicial, *pdia_final, *pdia_inicial);
-
-
          //chamando a funcao que calcula datas
          //calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
          */
@@ -346,23 +335,9 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
             erro++;
         }
 
-        //Se o mes for abril, ou junho, ou setembro, ou novembro, entao o mes tera 30 dias. Se nao, tera 31 dias.
-        if((*pmes_inicial == 4) || (*pmes_inicial == 6) || (*pmes_inicial == 9) || (*pmes_inicial == 11) || (*pmes_final == 4) || (*pmes_final == 6) || (*pmes_final == 9) || (*pmes_final == 11))
-        {
-            if((*pdia_inicial > 30) || (*pdia_final > 30))
-            {
-                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
-                erro++;
-            }
-        }
-        else
-        {
-            if((*pdia_inicial > 31) || (*pdia_final > 31))
-            {
-                printf("\nData invalida. Verifique os dias.\nOs meses de janeiro, marco, maio, julho, agosto, outubro e dezembro\nsao de 31 dias.\n\n\n");
-                erro++;
-            }
-        }
+
+
+
 
         //Se o ano for bissexto, entao o mes de fevereiro tera 29 dias. Se nao, tera 28 dias.
         if(((*pmes_inicial == 2) && ((*pano_inicial%4 == 0) && (*pano_inicial%100 != 0) || (*pano_inicial%400 == 0))) || ((*pmes_final == 2) && ((*pano_final%4 == 0) && (*pano_final%100 != 0) || (*pano_final%400 == 0))))
@@ -383,6 +358,35 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
             }
 
         }
+
+        //Se o mes for abril, ou junho, ou setembro, ou novembro, entao o mes tera 30 dias. Se nao, tera 31 dias.
+        if((*pmes_inicial == 4) || (*pmes_inicial == 6) || (*pmes_inicial == 9) || (*pmes_inicial == 11))
+        {
+            if(*pdia_inicial > 30)
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
+                erro++;
+                printf("*pdia_inicial = %lu\n*pdia_final = %lu\n", *pdia_inicial, *pdia_final);
+            }
+        }
+        else if((*pmes_final == 4) || (*pmes_final == 6) || (*pmes_final == 9) || (*pmes_final == 11))
+        {
+            if(*pdia_final > 30)
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
+                erro++;
+                printf("*pdia_inicial = %lu\n*pdia_final = %lu\n", *pdia_inicial, *pdia_final);
+            }
+        }
+        else
+        {
+            if((*pdia_inicial > 31) || (*pdia_final > 31))
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de janeiro, marco, maio, julho, agosto, outubro e dezembro\nsao de 31 dias.\n\n\n");
+                erro++;
+            }
+        }
+
 
         //Se nao houver erro, entao chama a funcao de calculo de dat
         if(erro == 0)
@@ -1108,4 +1112,3 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         fclose(file);
 
     }
-

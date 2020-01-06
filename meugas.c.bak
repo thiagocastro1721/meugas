@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 int main ()
@@ -112,18 +113,15 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
          ano_final_r = *pano_inicial;
          dias_a_calcular_r = 0;
          opcao_r = 0;
-
          if( mes_inicial_r == 12)
          {
              mes_final_r = 1;
              ano_final_r = ano_final_r + 1;
          }
-
           //calculo dos anos
          if(*pmes_final > *pmes_inicial)
          {
              cont_anos = *pano_final - *pano_inicial;
-
              //calculando os meses
              if(*pdia_final < *pdia_inicial)
              {
@@ -144,7 +142,6 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
              {
                  cont_anos = *pano_final - *pano_inicial;
              }
-
              //calculando os meses
              if(*pdia_final < *pdia_inicial)
              {
@@ -158,25 +155,17 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
          else
          {
              cont_anos = (*pano_final - *pano_inicial) - 1;
-
              //calculando os meses
              cont_meses = 12 - *pmes_final;
          }
-
          opcao_bissexta = 0;
          printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_r, mes_inicial_r, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, opcao_bissexta);
          quant_anos_bissextos = (calculadora_de_datas(&dia_inicial_r, &mes_inicial_r, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &opcao_bissexta) % 365);
-
          //Vamos chamar a funcao para calcular a diferenca em dias que resta para o calculo das semanas e dos dias.
          dias_remanescentes = (calculadora_de_datas(&dia_inicial_r, &mes_inicial_r, &ano_inicial_r, &dia_final_r, &mes_final_r, &ano_final_r, &dias_a_calcular_r, &opcao_r)) - quant_anos_bissextos;
-
          cont_semanas = dias_remanescentes / 7;
-
          cont_dias = dias_remanescentes % 7;
-
          printf("\n%lu anos; %lu meses; %lu semanas; %lu dias; quant_anos_bi = %lu\n\nano_final = %lu, ano_inical = %lu, mes_final = %lu, mes_inicial = %lu,\ndia_final %lu,dia_inicial = %lu. \n", cont_anos, cont_meses, cont_semanas, cont_dias, quant_anos_bissextos, *pano_final, *pano_inicial, *pmes_final, *pmes_inicial, *pdia_final, *pdia_inicial);
-
-
          //chamando a funcao que calcula datas
          //calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
          */
@@ -191,7 +180,7 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
         printf("Digite os dias que serao acrescentados.\n");
         scanf("%lu", &*pdias_a_calcular);
 
-        *pdia_final = 31;
+        *pdia_final = 31;//era 31 mas foi modificado para 28 para nao cair na verificacao de datas
         *pmes_final = 12;
         *pano_final = 9999999;
 
@@ -346,23 +335,9 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
             erro++;
         }
 
-        //Se o mes for abril, ou junho, ou setembro, ou novembro, entao o mes tera 30 dias. Se nao, tera 31 dias.
-        if((*pmes_inicial == 4) || (*pmes_inicial == 6) || (*pmes_inicial == 9) || (*pmes_inicial == 11) || (*pmes_final == 4) || (*pmes_final == 6) || (*pmes_final == 9) || (*pmes_final == 11))
-        {
-            if((*pdia_inicial > 30) || (*pdia_final > 30))
-            {
-                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
-                erro++;
-            }
-        }
-        else
-        {
-            if((*pdia_inicial > 31) || (*pdia_final > 31))
-            {
-                printf("\nData invalida. Verifique os dias.\nOs meses de janeiro, marco, maio, julho, agosto, outubro e dezembro\nsao de 31 dias.\n\n\n");
-                erro++;
-            }
-        }
+
+
+
 
         //Se o ano for bissexto, entao o mes de fevereiro tera 29 dias. Se nao, tera 28 dias.
         if(((*pmes_inicial == 2) && ((*pano_inicial%4 == 0) && (*pano_inicial%100 != 0) || (*pano_inicial%400 == 0))) || ((*pmes_final == 2) && ((*pano_final%4 == 0) && (*pano_final%100 != 0) || (*pano_final%400 == 0))))
@@ -383,6 +358,35 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
             }
 
         }
+
+        //Se o mes for abril, ou junho, ou setembro, ou novembro, entao o mes tera 30 dias. Se nao, tera 31 dias.
+        if((*pmes_inicial == 4) || (*pmes_inicial == 6) || (*pmes_inicial == 9) || (*pmes_inicial == 11))
+        {
+            if(*pdia_inicial > 30)
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
+                erro++;
+                printf("*pdia_inicial = %lu\n*pdia_final = %lu\n", *pdia_inicial, *pdia_final);
+            }
+        }
+        else if((*pmes_final == 4) || (*pmes_final == 6) || (*pmes_final == 9) || (*pmes_final == 11))
+        {
+            if(*pdia_final > 30)
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de abril, junho, setembro e novembro sao de 30 dias.\n\n\n");
+                erro++;
+                printf("*pdia_inicial = %lu\n*pdia_final = %lu\n", *pdia_inicial, *pdia_final);
+            }
+        }
+        else
+        {
+            if((*pdia_inicial > 31) || (*pdia_final > 31))
+            {
+                printf("\nData invalida. Verifique os dias.\nOs meses de janeiro, marco, maio, julho, agosto, outubro e dezembro\nsao de 31 dias.\n\n\n");
+                erro++;
+            }
+        }
+
 
         //Se nao houver erro, entao chama a funcao de calculo de dat
         if(erro == 0)
@@ -411,12 +415,12 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     signed long i, j, dias_do_mes, mes_do_ano, dia_da_semana = 0, opcaozero = 0;
     signed long ano, mes, primeiro_dia_do_mes, cont_dias = 0, k;
     signed long maiores_dias, menores_dias, x_dias;
-    signed long cont_anos = 0, guarda_dia_inicial, guarda_mes_inicial, quant_meses = 0, quant_dias, quant_anos_bissextos = 0;
+    signed long quant_anos = 0, guarda_dia_inicial, guarda_mes_inicial, quant_meses = 0, quant_dias = 0, quant_anos_bissextos = 0, quant_semanas = 0;
     signed long dia_inicial_r, dia_final_r, mes_inicial_r, mes_final_r, ano_inicial_r, ano_final_r, dias_a_calcular_r, opcao_r, temp_dia_r, temp_mes_r;
     signed long opcao_bissexta, dias_menos_anos;
     signed long opcao_resto, dias_remanescentes, cont_semanas;
     signed long a, m, ano_desconto, mes_desconto;
-
+    signed long dia_inicial_d, mes_inicial_d, ano_inicial_d, dias_a_calcular_d, opcao_d;// opcao para calcular a quant_dias
 
     //variaveis criadas para o calcula do dia da semana.
     //todas elas tem o final _s.
@@ -435,6 +439,11 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
 
     for(i = ano; i <= *pano_final; i++)
     {
+        if(i > *pano_inicial)
+        {
+            quant_anos++;
+        }
+
 
         if(i != *pano_final)
         {
@@ -816,23 +825,26 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
             for(k = primeiro_dia_do_mes; k < dias_do_mes; k++)
             {
                 cont_dias++;
-                /*
-                if(k == *pdia_inicial && j == *pmes_inicial)
-                {
-                    cont_anos = cont_anos + 1;
 
-
-                    if(*pmes_final < *pmes_inicial)
-                    {
-                        cont_anos = cont_anos - 1;
-                    }
-                    else
-                    {
-                        cont_anos = cont_anos + 1;
-                    }
-
+                //contador de anos.
+                if((k == 21) && (j == 5))
+                {//esta condicional vai contar todos os anos. restara menos de 366 dias para a contagem dos meses, das semanas e dos dias.
+                    //quant_anos++;
+                    //printf("\n%lu\n", i);
                 }
-                */
+                if((k == guarda_dia_inicial))//tera que ser feito pelo menos um decremento, pq k ja inicia com o valor de *pdia_inicial.
+                {
+                    quant_meses++;
+                }
+
+                if(k <= *pdia_final)
+                {
+                    quant_dias++;
+                    if(quant_dias % 7 == 0)
+                    {
+                        quant_semanas++;
+                    }
+                }
 
 
 
@@ -863,169 +875,42 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     }
     else if (*popcao == 1)
     {
-         printf("\nDiferenca em dias = %lu\n", cont_dias);
-
-         /*
-         cont_anos = cont_anos - 1;
-
-        if(*pmes_final < guarda_mes_inicial)
+        if((*pdia_final < guarda_dia_inicial) && (*pmes_final <= guarda_mes_inicial))
         {
-            cont_anos = cont_anos - 1;
-            quant_meses = 12 - *pmes_final;
+            quant_anos = quant_anos - 1;
         }
-        else if(*pmes_final == guarda_mes_inicial)
+
+        quant_meses = (quant_meses - (quant_anos * 12));
+
+        if(*pdia_final < guarda_dia_inicial)
         {
-            if(*pdia_final < guarda_dia_inicial)
-            {
-                cont_anos = cont_anos - 1;
-
-                if(*pdia_final < guarda_dia_inicial)
-                {
-                    quant_meses = 11;
-                }
-                else
-                {
-                    quant_meses = 0;
-                }
-            }
+            quant_meses = quant_meses - 1;
         }
-        else
+
+        dia_inicial_d = guarda_dia_inicial;
+        mes_inicial_d = guarda_mes_inicial + quant_meses;
+        ano_inicial_d = *pano_inicial + quant_anos;
+        dias_a_calcular_d = 0;
+        opcao_d = 0;
+
+        if(mes_inicial_d > 12)
         {
-            cont_anos = *pano_final - *pano_inicial;
-
-             //calculando os meses
-             if(*pdia_final < guarda_dia_inicial)
-             {
-                 quant_meses = (*pmes_final - guarda_mes_inicial) - 1;
-             }
-             else
-             {
-                 quant_meses = *pmes_final - guarda_mes_inicial;
-             }
+            mes_inicial_d = mes_inicial_d - 12;
+            ano_inicial_d++;
         }
-        */
 
-         // Variaveis alteradas com fianal _r para nao alterar os valores originais.
-         dia_inicial_r = guarda_dia_inicial;
-         dia_final_r = *pdia_final;
-         mes_inicial_r = guarda_mes_inicial;
-         mes_final_r = *pmes_final;
-         ano_inicial_r = *pano_inicial;
-         ano_final_r = *pano_final;
-         dias_a_calcular_r = 0;
-         opcao_r = 0;
+        //printf("\nvalores da funcao calculadora_de_datas, else if (*popcao == 4)...%lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", *pdia_inicial, *pmes_inicial, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, *popcao);
+        quant_dias = (calculadora_de_datas(&dia_inicial_d, &mes_inicial_d, &ano_inicial_d, &*pdia_final, &*pmes_final, &*pano_final, &dias_a_calcular_d, &opcao_d));
 
-         printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_r, mes_inicial_r, ano_inicial_r, dia_final_r, mes_final_r, ano_final_r, dias_a_calcular_r, opcao_r);
+        quant_semanas = quant_dias / 7;
 
-         m = mes_inicial_r;
-         a = ano_inicial_r;
+        quant_dias = quant_dias % 7;
 
-         for(ano_desconto = a; ano_desconto <= ano_final_r; ano_desconto++)
-         {
-            for(mes_desconto = m ; mes_desconto <= 12; mes_desconto++)
-            {
-                    if(mes_desconto == 2)
-                    {
-                        if((ano_desconto % 4 == 0) && (ano_desconto % 100 != 0) || (ano_desconto % 400 == 0))
-                        {
-                            cont_dias = cont_dias - 29;
-                            if(mes_desconto >= mes_inicial_r && (ano_desconto == ano_final_r))
-                            {
-                                quant_meses++;
-                            }
-                        }
-                        else
-                        {
-                            cont_dias = cont_dias - 28;
-                            if(mes_desconto >= mes_inicial_r && (ano_desconto == ano_final_r))
-                            {
-                                quant_meses++;
-                            }
-
-                        }
-
-                    }
-                    else if((mes_desconto == 4) || (mes_desconto == 6) || (mes_desconto == 9) || (mes_desconto == 11))
-                    {//Meses de 30 dias.
-                        cont_dias = cont_dias - 30;
-                        if(mes_desconto >= mes_inicial_r && (ano_desconto == ano_final_r))
-                        {
-                            quant_meses++;
-                        }
-
-                    }
-                    else
-                    {
-                        cont_dias = cont_dias - 31;
-                        if(mes_desconto >= mes_inicial_r && (ano_desconto == ano_final_r))
-                        {
-                            quant_meses++;
-
-                    }
-            }
-            cont_anos++;
-
-         }
-
-         cont_semanas = cont_dias / 7;
-         quant_dias = cont_dias % 7;
-         cont_anos = cont_anos - 2;
-
-        printf("\n*pdia_inicial = %lu, *pmes_inicial = %lu, *pdia_final %lu, *pmes_final %lu\n", guarda_dia_inicial, guarda_mes_inicial, *pdia_final, *pmes_final) - quant_anos_bissextos;
-        printf("\nAno(s) = %lu\n", cont_anos);
+        printf("\nAno(s) = %lu\n", quant_anos);
         printf("\nMes(es) = %lu\n", quant_meses);
-        printf("\nSemana(s) = %lu\n", cont_semanas);
+        printf("\nSemana(s) = %lu\n", quant_semanas);
         printf("\nDia(s) = %lu\n", quant_dias);
-
-         //Se dia_final_r < dia_inicial_r, entao fazemos a troca para o calculo de dias_menos_anos.
- /*
-         if(mes_final_r < mes_inicial_r)
-         {
-             temp_mes_r = mes_inicial_r;
-             mes_inicial_r = mes_final_r;
-             mes_final_r = temp_mes_r;
-
-             temp_dia_r = dia_inicial_r;
-             dia_inicial_r = dia_final_r;
-             dia_final_r = temp_dia_r;
-
-         }
-         else if(mes_final_r == mes_inicial_r)
-         {
-            if(dia_final_r < dia_inicial_r)
-            {
-                temp_dia_r = dia_inicial_r;
-                dia_inicial_r = dia_final_r;
-                dia_final_r = temp_dia_r;
-            }
-         }
-
-         mes_final_r = mes_inicial_r + 1;
-
-         printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_r, mes_inicial_r, ano_inicial_r, dia_final_r, mes_final_r, ano_final_r, dias_a_calcular_r, opcao_r);
-         dias_menos_anos = calculadora_de_datas(&dia_inicial_r, &mes_inicial_r, &ano_inicial_r, &dia_final_r, &mes_final_r, &ano_final_r, &dias_a_calcular_r, &opcao_r) - (quant_anos_bissextos);
-
-         //Vamos chamar a funcao para calcular a diferenca em dias que resta para o calculo das semanas e dos dias.
-         dias_remanescentes = quant_dias - dias_menos_anos;
-
-         cont_semanas = dias_menos_anos / 7;
-
-         quant_dias = dias_menos_anos % 7;
-
-
-
-
-        printf("\n*pdia_inicial = %lu, *pmes_inicial = %lu, *pdia_final %lu, *pmes_final %lu\n", guarda_dia_inicial, guarda_mes_inicial, *pdia_final, *pmes_final) - quant_anos_bissextos;
-        printf("\nAno(s) = %lu\n", cont_anos);
-        printf("\nMes(es) = %lu\n", quant_meses);
-        printf("\nSemana(s) = %lu\n", cont_semanas);
-        printf("\nDia(s) = %lu\n", quant_dias);
-        printf("\ndias_menos_anos = %lu\n", dias_menos_anos);
-        printf("\ndias_remanescentes = %lu\n", dias_remanescentes);
-
-        printf("\nquant_anos_bissextos = %lu\n", quant_anos_bissextos);
-        */
-
+        printf("\nDiferenca em dias = %lu\n", cont_dias);
 
          return 0;
     }
@@ -1227,4 +1112,3 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         fclose(file);
 
     }
-
