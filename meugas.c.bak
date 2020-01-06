@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 int main ()
@@ -395,7 +394,7 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
 
 
             //*pdia_inicial = 1;
-            //printf("\nvalores da funcao validar_datas, if((*pano_inicial <= 0)...%lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu.\n", *pdia_inicial, *pmes_inicial, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, *popcao);
+            printf("\nvalores da funcao validar_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu.\n", *pdia_inicial, *pmes_inicial, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, *popcao);
             calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
             //printf("\nA funcao calculadora_de_datas foi chamada.\n");
 
@@ -427,6 +426,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     signed long dia_inicial_s, mes_inicial_s, ano_inicial_s, dia_final_s, mes_final_s, ano_final_s, dias_a_calcular_s, opcaozero_s = 0;
     signed long dia_inicial_sub, mes_inicial_sub, ano_inicial_sub, dia_final_sub, mes_final_sub, ano_final_sub, dias_a_calcular_sub, opcao_sub = 0;
     signed long dia_inicial_md, mes_inicial_md, ano_inicial_md, dia_final_md, mes_final_md, ano_final_md, dias_a_calcular_md, opcao_md;
+    signed long temp_dia_inicial, temp_mes_inicial, temp_ano_inicial;
 
     // primeiro definir uma funcao que calcula void dia_da_semana();
     /*Fazer verificacao de entrada de dados*/
@@ -875,12 +875,25 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     }
     else if (*popcao == 1)
     {
-        if((*pdia_final < guarda_dia_inicial) && (*pmes_final <= guarda_mes_inicial))
+
+
+        /*
+        if(((*pdia_final < guarda_dia_inicial) && (*pmes_final <= guarda_mes_inicial)) || ((*pdia_final == guarda_dia_inicial) && (*pmes_final == guarda_mes_inicial)))
         {
             quant_anos = quant_anos - 1;
+            printf("\nquant_anos - 1");
         }
+        */
+        quant_anos = quant_anos - 1;
 
         quant_meses = (quant_meses - (quant_anos * 12));
+        printf("\n\ndia_inicial_d = %lu,\nguarda_dia_inicial = %lu,\nmes_inicial_d = %lu,\nguarda_mes_inicial = %lu,\nquant_meses = %lu,\nano_inicial_d = %lu,\n*pano_inicial = %lu,\nquant_anos = %lu,\ndias_a_calcular_d = %lu,\nopcao_d = %lu.\n\n",dia_inicial_d, guarda_dia_inicial, mes_inicial_d, guarda_mes_inicial, quant_meses, ano_inicial_d, *pano_inicial, quant_anos, dias_a_calcular_d, opcao_d);
+
+        if(quant_meses >= 12)
+        {
+            quant_meses == 1;
+            quant_anos++;
+        }
 
         if(*pdia_final < guarda_dia_inicial)
         {
@@ -893,13 +906,37 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         dias_a_calcular_d = 0;
         opcao_d = 0;
 
-        if(mes_inicial_d > 12)
-        {
-            mes_inicial_d = mes_inicial_d - 12;
-            ano_inicial_d++;
-        }
 
-        //printf("\nvalores da funcao calculadora_de_datas, else if (*popcao == 4)...%lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", *pdia_inicial, *pmes_inicial, *pano_inicial, *pdia_final, *pmes_final, *pano_final, *pdias_a_calcular, *popcao);
+
+
+        if(mes_inicial_d >= 12)
+        {
+            printf("\nEntrou na condicional mes_inicial_d >= 12.\n");
+            ano_inicial_d = ano_inicial_d + (mes_inicial_d / 12);
+            mes_inicial_d = mes_inicial_d % 12;
+        }
+        printf("\n\ndia_inicial_d = %lu,\nguarda_dia_inicial = %lu,\nmes_inicial_d = %lu,\nguarda_mes_inicial = %lu,\nquant_meses = %lu,\nano_inicial_d = %lu,\n*pano_inicial = %lu,\nquant_anos = %lu,\ndias_a_calcular_d = %lu,\nopcao_d = %lu.\n\n",dia_inicial_d, guarda_dia_inicial, mes_inicial_d, guarda_mes_inicial, quant_meses, ano_inicial_d, *pano_inicial, quant_anos, dias_a_calcular_d, opcao_d);
+
+
+                /*troca de posicao caso a primeira data seja maior que a segunda data*/
+         if((ano_inicial_d > *pano_final) || ((ano_inicial_d == *pano_final) && (mes_inicial_d > *pmes_final)) || ((ano_inicial_d == *pano_final) && (mes_inicial_d == *pmes_final) && (dia_inicial_d > *pdia_final)))
+         {
+             printf("\nHouve troca calculadora opcao 1.\n");
+             temp_dia_inicial = dia_inicial_d;
+             temp_mes_inicial = mes_inicial_d;
+             temp_ano_inicial = ano_inicial_d;
+
+             dia_inicial_d = *pdia_final;
+             mes_inicial_d = *pmes_final;
+             ano_inicial_d = *pano_final;
+
+             *pdia_final = temp_dia_inicial;
+             *pmes_final = temp_mes_inicial;
+             *pano_final = temp_ano_inicial;
+         }
+
+
+        printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_d, mes_inicial_d, ano_inicial_d, *pdia_final, *pmes_final, *pano_final, dias_a_calcular_d, opcao_d);
         quant_dias = (calculadora_de_datas(&dia_inicial_d, &mes_inicial_d, &ano_inicial_d, &*pdia_final, &*pmes_final, &*pano_final, &dias_a_calcular_d, &opcao_d));
 
         quant_semanas = quant_dias / 7;
