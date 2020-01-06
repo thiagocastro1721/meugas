@@ -180,7 +180,7 @@ void captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *p
         printf("Digite os dias que serao acrescentados.\n");
         scanf("%lu", &*pdias_a_calcular);
 
-        *pdia_final = 31;//era 31 mas foi modificado para 28 para nao cair na verificacao de datas
+        *pdia_final = 31;
         *pmes_final = 12;
         *pano_final = 9999999;
 
