@@ -897,6 +897,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         dia_inicial_d = guarda_dia_inicial;
         mes_inicial_d = guarda_mes_inicial + quant_meses;
         ano_inicial_d = *pano_inicial + quant_anos;
+        printf("\nVerificando ano_inicial_d = %lu\nquant_anos = %lu\n", ano_inicial_d, quant_anos);
         dias_a_calcular_d = 0;
         opcao_d = 0;
 
@@ -907,16 +908,19 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         }
 
 
-        if(mes_inicial_d >= 12)
+        if(mes_inicial_d > 12)
         {
             printf("\nEntrou na condicional mes_inicial_d >= 12.\n");
-            ano_inicial_d = ano_inicial_d + (mes_inicial_d / 12);
+            ano_inicial_d = ano_inicial_d + 1;
             mes_inicial_d = mes_inicial_d % 12;
+            if(mes_inicial_d == 0)
+            {
+                mes_inicial_d = 12;
+            }
         }
         printf("\n\ndia_inicial_d = %lu,\nguarda_dia_inicial = %lu,\nmes_inicial_d = %lu,\nguarda_mes_inicial = %lu,\nquant_meses = %lu,\nano_inicial_d = %lu,\n*pano_inicial = %lu,\nquant_anos = %lu,\ndias_a_calcular_d = %lu,\nopcao_d = %lu.\n\n",dia_inicial_d, guarda_dia_inicial, mes_inicial_d, guarda_mes_inicial, quant_meses, ano_inicial_d, *pano_inicial, quant_anos, dias_a_calcular_d, opcao_d);
 
-
-                /*troca de posicao caso a primeira data seja maior que a segunda data*/
+        /*troca de posicao caso a primeira data seja maior que a segunda data*/
          if((ano_inicial_d > *pano_final) || ((ano_inicial_d == *pano_final) && (mes_inicial_d > *pmes_final)) || ((ano_inicial_d == *pano_final) && (mes_inicial_d == *pmes_final) && (dia_inicial_d > *pdia_final)))
          {
              printf("\nHouve troca calculadora opcao 1.\n");
@@ -935,6 +939,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
 
 
         printf("\nvalores da funcao calculadora_de_datas, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, \n", dia_inicial_d, mes_inicial_d, ano_inicial_d, *pdia_final, *pmes_final, *pano_final, dias_a_calcular_d, opcao_d);
+
         quant_dias = (calculadora_de_datas(&dia_inicial_d, &mes_inicial_d, &ano_inicial_d, &*pdia_final, &*pmes_final, &*pano_final, &dias_a_calcular_d, &opcao_d));
 
         quant_semanas = quant_dias / 7;
