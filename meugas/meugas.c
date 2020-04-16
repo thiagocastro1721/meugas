@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 int main ()
 {
     printf("*******************************************************************************\n");
@@ -6,15 +7,15 @@ int main ()
     printf("*******************************************************************************\n");
 
     //entradas
-    float peso_total_inicial, peso_atual, tara_botijao, tara_registro;
+    double peso_total_inicial = 0, peso_atual = 0, tara_botijao = 0, tara_registro = 0, taras = 0;
 
     int repetir = 1;
     signed long dia_inicial = 0, mes_inicial = 0, ano_inicial = 0, dia_final = 0, mes_final = 0, ano_final = 0, dias_a_calcular = 0, opcao = -1;
 
     //saidas
-    float peso_gas_inicial, peso_gas_atual, percentual_gas_atual;
-    float consumo_medio_diario, consumo_medio_diario_percentual;
-    float dias_remanecentes;
+    double peso_gas_inicial = 0, peso_gas_atual = 0, percentual_gas_atual = 0;
+    double consumo_medio_diario, consumo_medio_diario_percentual;
+    double dias_remanecentes;
     //duracao_atual = diferenca em dias entre a data inicial de utilizacao e a data atual de medicao.
     int duracao_atual;
 
@@ -28,23 +29,73 @@ int main ()
 
     while(repetir == 1)
     {
+
         printf("\nDigite o peso TOTAL inicial do botijao em Kg. (Botijao + Gas + Registro).\n");
-        scanf("%f", &peso_total_inicial);
+        scanf("%lf", &peso_total_inicial);
 
         printf("Digite o peso ATUAL do botijao em Kg. (Botijao + Gas + Registro).\n");
-        scanf("%f", &peso_atual);
+        scanf("%lf", &peso_atual);
 
         printf("Digite a tara do botijao em Kg.\n");
-        scanf("%f", &tara_botijao);
+        scanf("%lf", &tara_botijao);
 
         printf("Digite a tara do registro em Kg.\n");
-        scanf("%f", &tara_registro);
+        scanf("%lf", &tara_registro);
+
+
+        /*
+        peso_total_inicial = 28.4;
+        peso_atual = 15.4;
+        tara_botijao = 15.1;
+        tara_registro = 0.3;
+        */
+
+
+        peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
+        taras = tara_botijao + tara_registro;
+        peso_gas_atual = peso_atual - taras;
+
+        printf("\npeso_gas_atual = %f\n", peso_gas_atual);
+
+        /*
+        if(peso_gas_atual < 0)
+        {
+            printf("\nEntrou na condicional peso_gas_atual == -0\n");
+            peso_gas_atual = fabs(peso_gas_atual);
+        }
+        percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
+
+        */
+
+
+        //Erro. Peso atual do gas eh negativo
+
+        while(peso_gas_atual < 0)
+        {
+            printf("\nErro. O peso atual do gas nao pode ser negativo.\nVerifique as entradas e digite novamente.\n");
+
+            printf("\nDigite o peso TOTAL inicial do botijao em Kg. (Botijao + Gas + Registro).\n");
+            scanf("%lf", &peso_total_inicial);
+
+            printf("Digite o peso ATUAL do botijao em Kg. (Botijao + Gas + Registro).\n");
+            scanf("%lf", &peso_atual);
+
+            printf("Digite a tara do botijao em Kg.\n");
+            scanf("%lf", &tara_botijao);
+
+            printf("Digite a tara do registro em Kg.\n");
+            scanf("%lf", &tara_registro);
+
+            peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
+            peso_gas_atual = (peso_atual - (tara_botijao + tara_registro));
+            percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
+
+        }
+
 
         duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
-        peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
-        peso_gas_atual = ((peso_atual - tara_botijao) - tara_registro);
-        percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
+
 
         //signed long *pdias_a_calcular = 0;
         //signed long *popcao = 0;
@@ -57,7 +108,7 @@ int main ()
 
 
         printf("Peso inicial do gas   = %.2f Kg\n", peso_gas_inicial);
-        printf("Peso atual do gas     = %.2f Kg\n", peso_gas_atual + 10);
+        printf("Peso atual do gas     = %.2f Kg\n", peso_gas_atual);
         printf("Consumo medio diario  = %.3f kg/dia \n", consumo_medio_diario);
         printf("Percentual atual      = %.2f %%\n", percentual_gas_atual);
         printf("Dias restantes        = %d dias\n", (int)dias_remanecentes);
