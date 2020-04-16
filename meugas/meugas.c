@@ -69,7 +69,7 @@ int main ()
             printf("\nDigite o peso TOTAL inicial do botijao em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_total_inicial);
 
-            printf("Digite o peso ATUAL do botijao em Kg. (Botijao + Gas + Registro).\n");
+            printf("Digite o peso TOTAL atual do botijao em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_atual);
 
             printf("Digite a tara do botijao em Kg.\n");
