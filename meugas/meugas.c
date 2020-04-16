@@ -43,7 +43,7 @@ int main ()
         duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
         peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
-        peso_gas_atual = peso_atual - tara_botijao - tara_registro;
+        peso_gas_atual = ((peso_atual - tara_botijao) - tara_registro);
         percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
 
         //signed long *pdias_a_calcular = 0;
@@ -57,7 +57,7 @@ int main ()
 
 
         printf("Peso inicial do gas   = %.2f Kg\n", peso_gas_inicial);
-        printf("Peso atual do gas     = %.2f Kg\n", peso_gas_atual);
+        printf("Peso atual do gas     = %.2f Kg\n", peso_gas_atual + 10);
         printf("Consumo medio diario  = %.3f kg/dia \n", consumo_medio_diario);
         printf("Percentual atual      = %.2f %%\n", percentual_gas_atual);
         printf("Dias restantes        = %d dias\n", (int)dias_remanecentes);
