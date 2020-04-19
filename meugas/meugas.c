@@ -37,6 +37,7 @@ int main ()
     int i, j;
     //duracao_atual = diferenca em dias entre a data inicial de utilizacao e a data atual de medicao.
     int duracao_atual;
+    int dia_da_semana;
 
     //previsao de termino
     int dia_previsto, mes_previsto, ano_previsto;
@@ -51,42 +52,29 @@ int main ()
 
         //impriminto
         printf("\nImprimindo os valores do arquivo\n");
-        for(i = 0; i < 19; i++)
+        for(i = 0; i < 20; i++)
         {
             printf("\n");
             for(j = 0; j < 14; j++)
             {
-                 printf("%.1f ", matriz_gas[i][j]);
+                 printf("%.0f ", matriz_gas[i][j]);
             }
         }
 
     if(matriz_gas[0][0] == 0)
     {
-        printf("\nIniciando captura de dados para o gas 1.\n");
-    }
-    else
-    {
-        printf("\nid = %.0f\n", id);
-        printf("\ndia_inicial_de_consumo = %.0f\n", dia_inicial_de_consumo);
-        printf("\nmes_inicial_de_consumo = %.0f\n", mes_inicial_de_consumo);
-        printf("\nano_inicial_de_consumo = %.0f\n", ano_inicial_de_consumo);
-        printf("\npeso_inicial_total = %.1f\n", peso_inicial_total);
-        printf("\npeso_inicial_do_gas = %.1f\n", peso_inicial_do_gas);
-        printf("\ntara_do_botijao = %.1f\n", tara_do_botijao);
-        printf("\ntara_do_registro = %.1f\n", tara_do_registro);
-        printf("\ndia_do_termino = %.0f\n", dia_do_termino);
-        printf("\nmes_do_termino = %.0f\n", mes_do_termino);
-        printf("\nano_do_termino = %.0f\n", ano_do_termino);
-        printf("\nduracao_final_em_dias = %.0f\n", duracao_final_em_dias);
-    }
+        printf("\nmatriz_gas[0][0] == 0. Iniciando captura de dados para o gas 1.\n");
 
-    while(repetir == 1)
+        id++;
+
+
+        while(repetir == 1)
     {
-/*
-        printf("\nDigite o peso TOTAL inicial do botijao em Kg. (Botijao + Gas + Registro).\n");
+
+        printf("\nDigite o peso total inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
         scanf("%lf", &peso_total_inicial);
 
-        printf("Digite o peso TOTAL atual do botijao em Kg. (Botijao + Gas + Registro).\n");
+        printf("Digite o peso total atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
         scanf("%lf", &peso_atual);
 
         printf("Digite a tara do botijao em Kg.\n");
@@ -94,19 +82,20 @@ int main ()
 
         printf("Digite a tara do registro em Kg.\n");
         scanf("%lf", &tara_registro);
-*/
 
 
+/*
         peso_total_inicial = 28.4;
         peso_atual = 15.4;
         tara_botijao = 15.1;
         tara_registro = 0.3;
-
+*/
 
 
         peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
         taras = tara_botijao + tara_registro;
         peso_gas_atual = peso_atual - taras;
+        percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
 
         //Erro. Peso atual do gas eh negativo
 
@@ -116,10 +105,10 @@ int main ()
 
             printf("\nErro. O peso atual do gas nao pode ser negativo.\nVerifique as entradas e digite novamente.\n");
 
-            printf("\nDigite o peso TOTAL inicial do botijao em Kg. (Botijao + Gas + Registro).\n");
+            printf("\nDigite o peso total inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_total_inicial);
 
-            printf("Digite o peso TOTAL atual do botijao em Kg. (Botijao + Gas + Registro).\n");
+            printf("Digite o peso TOTAL atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_atual);
 
             printf("Digite a tara do botijao em Kg.\n");
@@ -134,6 +123,10 @@ int main ()
 
         }
 
+        printf("\n");
+        printf("*******************************************************************************\n");//linha inicial
+
+        printf("Id ----------------------- = %.0f\n", id);
 
         duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
@@ -149,23 +142,66 @@ int main ()
 
 
 
-        printf("Peso inicial do gas   = %.2f Kg\n", peso_gas_inicial);
-        printf("Peso atual do gas     = %.2f Kg\n", peso_gas_atual);
-        printf("Consumo medio diario  = %.3f kg/dia \n", consumo_medio_diario);
-        printf("Percentual atual      = %.2f %%\n", percentual_gas_atual);
-        printf("Dias restantes        = %d dias\n", (int)dias_remanecentes);
-        printf("Previsao de termino   = ");
-
+        printf("Data inicial de consumo -- = %02li/%02li/%li\n", dia_inicial, mes_inicial, ano_inicial);// dia perdido
+        printf("Peso inicial do conjunto - = %.2f Kg\n", peso_total_inicial);
+        printf("Peso atual do conjunto --- = %.2f Kg\n", peso_atual);
+        printf("Peso inicial do gas ------ = %.2f Kg\n", peso_gas_inicial);
+        printf("Tara do botijao ---------- = %.2f Kg\n", tara_botijao);
+        printf("Tara do registro --------- = %.2f Kg\n", tara_registro);
+        printf("Data de termino ---------- = %li/%li/%li\n", dia_final, mes_final, ano_final);// configurar
+        printf("Duracao final ------------ = ? Dias\n");// configurar
+        printf("Peso atual do gas -------- = %.2f Kg\n", peso_gas_atual);
+        printf("Consumo medio diario ----- = %.3f kg/dia \n", consumo_medio_diario);
+        printf("Percentual atual --------- = %.2f %%\n", percentual_gas_atual, peso_gas_atual, peso_gas_inicial);
+        printf("Dias restantes ----------- = %d Dias\n", (int)dias_remanecentes);
+        printf("Previsao de termino ------ = ");
         opcao = 2;
         dias_a_calcular = dias_remanecentes;
-        captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+        dia_da_semana = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
-        printf("*******************************************************************************\n");
+        //Não será mostrada esta variavel.
+        //printf("Dia da semana ------------ = %d\n", dia_da_semana);
+
+
+        printf("*******************************************************************************\n");//linha final
 
         printf("\nDeseja realizar outro calculo? ""1""(sim) ou ""0""(nao).\n");
         scanf("%i", &repetir);
         opcao = -1;
     }
+    }
+    else
+    {
+        printf("\nmatriz_gas[0][0] =! 0. Mostrando dados da ultima linha.\n");
+
+        id = matriz_gas[19][0];
+        dia_inicial_de_consumo = matriz_gas[19][1];
+        mes_inicial_de_consumo = matriz_gas[19][2];
+        ano_inicial_de_consumo = matriz_gas[19][3];
+        peso_inicial_total = matriz_gas[19][4];
+        peso_inicial_do_gas = matriz_gas[19][5];
+        tara_do_botijao = matriz_gas[19][6];
+        tara_do_registro = matriz_gas[19][7];
+        dia_do_termino = matriz_gas[19][8];
+        mes_do_termino = matriz_gas[19][9];
+        ano_do_termino = matriz_gas[19][10];
+        duracao_final_em_dias = matriz_gas[19][11];
+
+        printf("\nid = %.0f\n", id);
+        printf("\ndia_inicial_de_consumo = %.0f\n", dia_inicial_de_consumo);
+        printf("\nmes_inicial_de_consumo = %.0f\n", mes_inicial_de_consumo);
+        printf("\nano_inicial_de_consumo = %.0f\n", ano_inicial_de_consumo);
+        printf("\npeso_inicial_total = %.1f\n", peso_inicial_total);
+        printf("\npeso_inicial_do_gas = %.1f\n", peso_inicial_do_gas);
+        printf("\ntara_do_botijao = %.1f\n", tara_do_botijao);
+        printf("\ntara_do_registro = %.1f\n", tara_do_registro);
+        printf("\ndia_do_termino = %.0f\n", dia_do_termino);
+        printf("\nmes_do_termino = %.0f\n", mes_do_termino);
+        printf("\nano_do_termino = %.0f\n", ano_do_termino);
+        printf("\nduracao_final_em_dias = %.0f\n", duracao_final_em_dias);
+    }
+
+
 
 
 
@@ -241,7 +277,7 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
 
 
         //validar data e calcular a data inicial mais os dias.
-        validar_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
+        cont_dias = validar_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
 
     return cont_dias;
@@ -893,6 +929,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     //imprindo resultado
     if (*popcao == 0)
     {
+        *pdia_inicial = guarda_dia_inicial;
         return (int)cont_dias;
     }
     else if (*popcao == 1)
@@ -1059,9 +1096,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         //30 Anos 8 Meses 1 Semana 2 Dias
         //Diferenca em dias = 11211
 
-        printf("\n");
-        printf("*******************************************************************************\n");
-        printf("Duracao atual         = ");
+        printf("Duracao atual ------------ = ");
         if(quant_anos > 0)
         {
             if(quant_anos == 1)
@@ -1109,14 +1144,15 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         }
         if(cont_dias > 0)
         {
-            printf("\nDuracao atual         = %.0lf dias\n", cont_dias);
+            printf("\nDuracao atual ------------ = %.0lf Dias\n", cont_dias);
         }
         if(quant_anos == 0 && quant_meses == 0 && quant_semanas == 0 && quant_dias == 0 && cont_dias == 0)
         {
             printf("\nDatas iguais.\n\n");
         }
 
-         return cont_dias;
+        *pdia_inicial = guarda_dia_inicial;
+        return cont_dias;
     }
     else if (*popcao == 2)
     {
@@ -1198,7 +1234,9 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
 
         printf(" %02li/%02li/%li\n" ,*pdia_final, *pmes_final, *pano_final);
 
-        return 0;
+        *pdia_inicial = guarda_dia_inicial;
+
+        return dia_da_semana;//vai retornar para as outras funcoes o valor do dia da semana. A variável con_dias ira receber o valor.
     }
 
 }
@@ -1239,7 +1277,7 @@ void ler_arquivo_gas_data(double x[20][14])
     file = fopen("gas.data","a+");
 
     /*Preenchendo a matriz com os valores do arquivo.*/
-    for(i = 0; i < 19; i++)
+    for(i = 0; i < 20; i++)
     {
         fscanf(file, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", &id, &dia_inicial_de_consumo, &mes_inicial_de_consumo, &ano_inicial_de_consumo, &peso_inicial_total, &peso_inicial_do_gas, &tara_do_botijao, &tara_do_registro, &dia_do_termino, &mes_do_termino, &ano_do_termino, &duracao_final_em_dias, &zero1, &zero2);
 
