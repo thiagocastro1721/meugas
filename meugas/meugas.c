@@ -2,7 +2,7 @@
 #include <math.h>
 
 /*Vetores e matrizes globais para passar os dados para o arquivo gas.data*/
-double matriz_gas[100000][39];
+double matriz_gas[100000][41];
 int parametro_int[3];
 long int parametro_signed_long[26];
 double parametro_double[12];
@@ -51,7 +51,22 @@ signed long duracao_final_anos ------------------------ = parametro_signed_long[
 int duracao_final_em_dias ----------------------------- = parametro_double[10];(ok)
 double consumo_medio_global --------------------------- = parametro_double[11];(ok) //implementar
 */
-
+/*
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+(posicao)parametro
+(01)id,                                        (02)medicao,                                   (03)dia_da_medicao,                                      (04)mes_da_medicao,
+(05)ano_da_medicao,                            (06)duracao_atual_dias,                        (07)duracao_atual_semanas,                               (08)duracao_atual_meses,
+(09)duracao_atual_anos,                        (10)duracao_atual_em_dias,                     (11)dia_inicial_de_consumo,                              (12)mes_inicial_de_consumo,
+(13)ano_inicial_de_consumo,                    (14)peso_inicial_do_conjunto,                  (15)peso_atual_do_conjunto,                              (16)peso_inicial_do_gas,
+(17)tara_do_botijao,                           (18)tara_do_registro,                          (19)peso_atual_do_gas,                                   (20)consumo_medio_diario,
+(21)percentual_atual,                          (22)dias_restantes,                            (23)previsao_de_termino_dia,                             (24)previsao_de_termino_mes,
+(25)previsao_de_termino_ano,                   (26)previsao_de_termino_dia_da_semana,         (27)duracao_media_global_dias,                           (28)previsao_de_acordo_com_a_media_global_dia,
+(29)previsao_de_acordo_com_a_media_global_mes, (30)previsao_de_acordo_com_a_media_global_ano, (31)previsao_de_acordo_com_a_media_global_dia_da_semana, (32)data_de_termino_dia_da_semana,
+(33)data_de_termino_dia,                       (34)data_de_termino_mes,                       (35)data_de_termino_ano,                                 (36)duracao_final_dias,
+(37)duracao_final_semanas,                     (38)duracao_final_meses,                       (39)duracao_final_anos,                                  (40)duracao_final_em_dias,
+(41)consumo_medio_global
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 int main ()
 {
     printf("*******************************************************************************\n");
@@ -120,22 +135,10 @@ int main ()
     int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
     int validar_datas(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
     int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
-    void ler_arquivo_gas_data(double r[20][14]);
+    void ler_arquivo_gas_data();
     void gravar_dados_gas_data(double w[20][14]);
 
-    ler_arquivo_gas_data(matriz_gas);
-
-        //impriminto
-        printf("\nImprimindo os valores do arquivo\n");
-        for(i = 0; i < 20; i++)
-        {
-            printf("\n");
-            for(j = 0; j < 14; j++)
-            {
-                 printf("%.0f ", matriz_gas[i][j]);
-            }
-        }
-
+    matriz_gas[0][0] = 0;
     if(matriz_gas[0][0] == 0)
     {
         printf("\nmatriz_gas[0][0] == 0. Iniciando captura de dados para o gas 1.\n");
@@ -228,13 +231,6 @@ int main ()
 
 
             }
-
-
-
-
-
-
-
 
             //signed long *pdias_a_calcular = 0;
             //signed long *popcao = 0;
@@ -411,7 +407,8 @@ int main ()
                 scanf("%d", &salvar);
                 if(salvar == 1)
                 {
-                    printf("\nDados salvos em gas.data.\nSempre faca backup.");
+                    printf("\nDados salvos em gas3.data.\nSempre faca backup.");
+                    ler_arquivo_gas_data();
                 }
                 else if(salvar == 0)
                 {
@@ -439,32 +436,6 @@ int main ()
     else
     {
         printf("\nmatriz_gas[0][0] =! 0. Mostrando dados da ultima linha.\n");
-
-        id = matriz_gas[19][0];
-        dia_inicial_de_consumo = matriz_gas[19][1];
-        mes_inicial_de_consumo = matriz_gas[19][2];
-        ano_inicial_de_consumo = matriz_gas[19][3];
-        peso_inicial_total = matriz_gas[19][4];
-        peso_inicial_do_gas = matriz_gas[19][5];
-        tara_do_botijao = matriz_gas[19][6];
-        tara_do_registro = matriz_gas[19][7];
-        dia_do_termino = matriz_gas[19][8];
-        mes_do_termino = matriz_gas[19][9];
-        ano_do_termino = matriz_gas[19][10];
-        duracao_final_em_dias = matriz_gas[19][11];
-
-        printf("\nid = %.0f\n", id);
-        printf("\ndia_inicial_de_consumo = %.0f\n", dia_inicial_de_consumo);
-        printf("\nmes_inicial_de_consumo = %.0f\n", mes_inicial_de_consumo);
-        printf("\nano_inicial_de_consumo = %.0f\n", ano_inicial_de_consumo);
-        printf("\npeso_inicial_total = %.1f\n", peso_inicial_total);
-        printf("\npeso_inicial_do_gas = %.1f\n", peso_inicial_do_gas);
-        printf("\ntara_do_botijao = %.1f\n", tara_do_botijao);
-        printf("\ntara_do_registro = %.1f\n", tara_do_registro);
-        printf("\ndia_do_termino = %.0f\n", dia_do_termino);
-        printf("\nmes_do_termino = %.0f\n", mes_do_termino);
-        printf("\nano_do_termino = %.0f\n", ano_do_termino);
-        printf("\nduracao_final_em_dias = %.0f\n", duracao_final_em_dias);
     }
 
     return 0;
@@ -1528,35 +1499,9 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     }
 
 }
-void ler_arquivo_gas_data(double r[20][14])
+void ler_arquivo_gas_data()
 {
     printf("\nFUNCAO LER_ARQUIVO_GAS.DATA.\n");
-    int i, j;
-
-    double id = 0;
-    double dia_inicial_de_consumo = 0;
-    double mes_inicial_de_consumo = 0;
-    double ano_inicial_de_consumo = 0;
-    double peso_inicial_total = 0;
-    double peso_inicial_do_gas = 0;
-    double tara_do_botijao = 0;
-    double tara_do_registro = 0;
-    double dia_do_termino = 0;
-    double mes_do_termino = 0;
-    double ano_do_termino = 0;
-    double duracao_final_em_dias = 0;
-    double zero1 = 0;
-    double zero2 = 0;
-
-
-    //zerando todos os elementos da matriz_do_gas
-    for(i = 0; i < 19; i++)
-    {
-        for(j = 0; j < 14; j++)
-        {
-            r[i][j] = 0;
-        }
-    }
 
     /*criando a variavel ponteiro para o arquivo.*/
     FILE *file;
@@ -1564,48 +1509,25 @@ void ler_arquivo_gas_data(double r[20][14])
     //abrindo arquivo
     file = fopen("gas.data","a+");
 
-    /*Preenchendo a matriz com os valores do arquivo.*/
-    for(i = 0; i < 20; i++)
-    {
-        fscanf(file, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", &id, &dia_inicial_de_consumo, &mes_inicial_de_consumo, &ano_inicial_de_consumo, &peso_inicial_total, &peso_inicial_do_gas, &tara_do_botijao, &tara_do_registro, &dia_do_termino, &mes_do_termino, &ano_do_termino, &duracao_final_em_dias, &zero1, &zero2);
+    /*Escrevendo no arquivo*/
+    /*
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    (posicao)parametro
+    (01)id,                                        (02)medicao,                                   (03)dia_da_medicao,                                      (04)mes_da_medicao,
+    (05)ano_da_medicao,                            (06)duracao_atual_dias,                        (07)duracao_atual_semanas,                               (08)duracao_atual_meses,
+    (09)duracao_atual_anos,                        (10)duracao_atual_em_dias,                     (11)dia_inicial_de_consumo,                              (12)mes_inicial_de_consumo,
+    (13)ano_inicial_de_consumo,                    (14)peso_inicial_do_conjunto,                  (15)peso_atual_do_conjunto,                              (16)peso_inicial_do_gas,
+    (17)tara_do_botijao,                           (18)tara_do_registro,                          (19)peso_atual_do_gas,                                   (20)consumo_medio_diario,
+    (21)percentual_atual,                          (22)dias_restantes,                            (23)previsao_de_termino_dia,                             (24)previsao_de_termino_mes,
+    (25)previsao_de_termino_ano,                   (26)previsao_de_termino_dia_da_semana,         (27)duracao_media_global_dias,                           (28)previsao_de_acordo_com_a_media_global_dia,
+    (29)previsao_de_acordo_com_a_media_global_mes, (30)previsao_de_acordo_com_a_media_global_ano, (31)previsao_de_acordo_com_a_media_global_dia_da_semana, (32)data_de_termino_dia_da_semana,
+    (33)data_de_termino_dia,                       (34)data_de_termino_mes,                       (35)data_de_termino_ano,                                 (36)duracao_final_dias,
+    (37)duracao_final_semanas,                     (38)duracao_final_meses,                       (39)duracao_final_anos,                                  (40)duracao_final_em_dias,
+    (41)consumo_medio_global
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    */
 
-        r[i][0] = id;
-        r[i][1] = dia_inicial_de_consumo;
-        r[i][2] = mes_inicial_de_consumo;
-        r[i][3] = ano_inicial_de_consumo;
-        r[i][4] = peso_inicial_total;
-        r[i][5] = peso_inicial_do_gas;
-        r[i][6] = tara_do_botijao;
-        r[i][7] = tara_do_registro;
-        r[i][8] = dia_do_termino;
-        r[i][9] = mes_do_termino;
-        r[i][10] = ano_do_termino;
-        r[i][11] = duracao_final_em_dias;
-        r[i][12] = zero1;
-        r[i][13] = zero2;
-/*
-        //Se o primeiro elemento correspondente ao id for zero, entrao o arquivo deve estar vazio.
-        if(id == 0){
-            printf("\nIniciando captura de dados para o gas 1.\n");
-        }
-        else{
-            printf("\nid = %.0f\n", id);
-            printf("\ndia_inicial_de_consumo = %.0f\n", dia_inicial_de_consumo);
-            printf("\nmes_inicial_de_consumo = %.0f\n", mes_inicial_de_consumo);
-            printf("\nano_inicial_de_consumo = %.0f\n", ano_inicial_de_consumo);
-            printf("\npeso_inicial_total = %.1f\n", peso_inicial_total);
-            printf("\npeso_inicial_do_gas = %.1f\n", peso_inicial_do_gas);
-            printf("\ntara_do_botijao = %.1f\n", tara_do_botijao);
-            printf("\ntara_do_registro = %.1f\n", tara_do_registro);
-            printf("\ndia_do_termino = %.0f\n", dia_do_termino);
-            printf("\nmes_do_termino = %.0f\n", mes_do_termino);
-            printf("\nano_do_termino = %.0f\n", ano_do_termino);
-            printf("\nduracao_final_em_dias = %.0f\n", duracao_final_em_dias);
-        }
-*/
-    }
-
-
+    fprintf(file,"%i,%i,%li,%li,%li,%li,%li,%li,%li,%lf,%li,%li,%li,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%li,%li,%li,%li,%i,%li,%li,%li,%li,%i,%li,%li,%li,%li,%li,%li,%li,%i,%lf\n", parametro_int[0], parametro_int[1], parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2], parametro_signed_long[3], parametro_signed_long[4], parametro_signed_long[5], parametro_signed_long[6], parametro_double[0], parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9], parametro_double[1], parametro_double[2], parametro_double[3], parametro_double[4], parametro_double[5], parametro_double[6], parametro_double[7], parametro_double[8], parametro_double[9], parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12], parametro_signed_long[13], parametro_int[2], parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16], parametro_signed_long[17], parametro_signed_long[25], parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20], parametro_signed_long[21], parametro_signed_long[22], parametro_signed_long[23], parametro_signed_long[24], parametro_double[10], parametro_double[11]);
 
     /*fechando o arquivo*/
     fclose(file);
