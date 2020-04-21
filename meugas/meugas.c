@@ -1,5 +1,57 @@
 #include <stdio.h>
 #include <math.h>
+
+/*Vetores e matrizes globais para passar os dados para o arquivo gas.data*/
+double matriz_gas[100000][39];
+int parametro_int[3];
+long int parametro_signed_long[26];
+double parametro_double[12];
+
+/*
+Parametros
+int id ------------------------------------------------ = parametro_int[0];( ok )
+int medicao ------------------------------------------- = parametro_int[1];( ok )
+signed long dia_da_medicao ---------------------------- = parametro_signed_long[0];( ok )
+signed long mes_da_medicao ---------------------------- = parametro_signed_long[1];( ok )
+signed long ano_da_medicao ---------------------------- = parametro_signed_long[2];( ok )
+signed long duracao_atual_dias ------------------------ = parametro_signed_long[3];( ok )
+signed long duracao_atual_semanas --------------------- = parametro_signed_long[4];( ok )
+signed long duracao_atual_meses ----------------------- = parametro_signed_long[5];( ok )
+signed long duracao_atual_anos ------------------------ = parametro_signed_long[6];( ok )
+double duracao_atual_em_dias -------------------------- = parametro_double[0];( ok )
+signed long dia_inicial_de_consumo -------------------- = parametro_signed_long[7];( ok )
+signed long mes_inicial_de_consumo -------------------- = parametro_signed_long[8];( ok )
+signed long ano_inicial_de_consumo -------------------- = parametro_signed_long[9];( ok )
+double peso_inicial_do_conjunto ----------------------- = parametro_double[1];( ok )
+double peso_atual_do_conjunto ------------------------- = parametro_double[2];( ok )
+double peso_inicial_do_gas ---------------------------- = parametro_double[3];( ok )
+double tara_do_botijao -------------------------------- = parametro_double[4];( ok )
+double tara_do_registro ------------------------------- = parametro_double[5];( ok )
+double peso_atual_do_gas ------------------------------ = parametro_double[6];( ok )
+double consumo_medio_diario --------------------------- = parametro_double[7];( ok )
+double percentual_atual ------------------------------- = parametro_double[8];( ok )
+double dias_restantes --------------------------------- = parametro_double[9];( ok )
+signed long previsao_de_termino_dia ------------------- = parametro_signed_long[10];( ok )
+signed long previsao_de_termino_mes ------------------- = parametro_signed_long[11];( ok )
+signed long previsao_de_termino_ano ------------------- = parametro_signed_long[12];( ok )
+signed long previsao_de_termino_dia_da_semana --------- = parametro_signed_long[13];( ok )
+int duracao_media_global_dias ------------------------- = parametro_int[2];(ok) //implementar
+signed long previsao_de_acordo_com_a_media_global_dia - = parametro_signed_long[14];(ok) //implementar
+signed long previsao_de_acordo_com_a_media_global_mes - = parametro_signed_long[15];(ok) //implementar
+signed long previsao_de_acordo_com_a_media_global_ano - = parametro_signed_long[16];(ok) //implementar
+signed long previsao_de_acordo_com_a_media_global_dia_da_semana - = parametro_signed_long[17];(ok) //implementar
+int data_de_termino_dia_da_semana --------------------- = parametro_signed_long[25];(ok)
+signed long data_de_termino_dia ----------------------- = parametro_signed_long[18];(ok)
+signed long data_de_termino_mes ----------------------- = parametro_signed_long[19];(ok)
+signed long data_de_termino_ano ----------------------- = parametro_signed_long[20];(ok)
+signed long duracao_final_dias ------------------------ = parametro_signed_long[21];(ok) //implementar
+signed long duracao_final_semanas --------------------- = parametro_signed_long[22];(ok) //implementar
+signed long duracao_final_meses ----------------------- = parametro_signed_long[23];(ok) //implementar
+signed long duracao_final_anos ------------------------ = parametro_signed_long[24];(ok) //implementar
+int duracao_final_em_dias ----------------------------- = parametro_double[10];(ok)
+double consumo_medio_global --------------------------- = parametro_double[11];(ok) //implementar
+*/
+
 int main ()
 {
     printf("*******************************************************************************\n");
@@ -19,8 +71,8 @@ int main ()
     double matriz_gas[20][14];
 
     //parametros
-    double id = 0;
-    double medicao = 0;
+    int id = 0;
+    int medicao = 0;
     double dia_inicial_de_consumo = 0;
     double mes_inicial_de_consumo = 0;
     double ano_inicial_de_consumo = 0;
@@ -34,6 +86,25 @@ int main ()
     double duracao_final_em_dias = 0;
     double zero1 = 0;
     double zero2 = 0;
+    //                                    IMPLEMENTAR
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    int duracao_media_global_dias = 0;//parametro_int[2];
+    signed long previsao_de_acordo_com_a_media_global_dia = 0;//parametro_signed_long[14];
+    signed long previsao_de_acordo_com_a_media_global_mes = 0;//parametro_signed_long[15];
+    signed long previsao_de_acordo_com_a_media_global_ano = 0;//parametro_signed_long[16];
+    signed long previsao_de_acordo_com_a_media_global_dia_da_semana = 0;//parametro_signed_long[17];
+
+    //                                    IMPLEMENTAR
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    signed long duracao_final_dias = 0;
+    signed long duracao_final_semanas = 0;
+    signed long duracao_final_meses = 0;
+    signed long duracao_final_anos = 0;
+
+    //                                    IMPLEMENTAR
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    double consumo_medio_global = 0;
+
 
     int i, j;
     //duracao_atual = diferenca em dias entre a data inicial de utilizacao e a data atual de medicao.
@@ -69,24 +140,34 @@ int main ()
     {
         printf("\nmatriz_gas[0][0] == 0. Iniciando captura de dados para o gas 1.\n");
 
-        id++;
-        medicao++;
 
+        duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
         while(repetir == 1)
     {
+        printf("Digite o numero de identificacao do gas.\n");
+        scanf("%i", &id);
+        parametro_int[0] = id;
 
-        printf("\nDigite o peso total inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
+        printf("Digite a medicao sequencial.\n");
+        scanf("%i", &medicao);
+        parametro_int[1] = medicao;
+
+        printf("Digite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
         scanf("%lf", &peso_total_inicial);
+        parametro_double[1] = peso_total_inicial;
 
-        printf("Digite o peso total atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
+        printf("Digite o peso atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
         scanf("%lf", &peso_atual);
+        parametro_double[2] = peso_atual;
 
         printf("Digite a tara do botijao em Kg.\n");
         scanf("%lf", &tara_botijao);
+        parametro_double[4] = tara_botijao;
 
         printf("Digite a tara do registro em Kg.\n");
         scanf("%lf", &tara_registro);
+        parametro_double[5] = tara_registro;
 
 
 /*
@@ -97,10 +178,13 @@ int main ()
 */
 
 
-        peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
         taras = tara_botijao + tara_registro;
-        peso_gas_atual = peso_atual - taras;
+        peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
+        parametro_double[3] = peso_gas_inicial;
+        peso_gas_atual = (peso_atual - (tara_botijao + tara_registro));
+        parametro_double[6] = peso_gas_atual;
         percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
+        parametro_double[8] = percentual_gas_atual;
 
         //Erro. Peso atual do gas eh negativo
 
@@ -110,31 +194,45 @@ int main ()
 
             printf("\nErro. O peso atual do gas nao pode ser negativo.\nVerifique as entradas e digite novamente.\n");
 
-            printf("\nDigite o peso total inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
-            scanf("%lf", &peso_total_inicial);
+            printf("Digite o numero de identificacao do gas.\n");
+            scanf("%lf", &id);
+            parametro_int[0] = id;
 
-            printf("Digite o peso TOTAL atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
+            printf("Digite a medicao sequencial.\n");
+            scanf("%lf", &medicao);
+            parametro_int[1] = medicao;
+
+            printf("\nDigite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
+            scanf("%lf", &peso_total_inicial);
+            parametro_double[1] = peso_total_inicial;
+
+            printf("Digite o peso atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_atual);
+            parametro_double[2] = peso_atual;
 
             printf("Digite a tara do botijao em Kg.\n");
             scanf("%lf", &tara_botijao);
+            parametro_double[4] = tara_botijao;
 
             printf("Digite a tara do registro em Kg.\n");
             scanf("%lf", &tara_registro);
+            parametro_double[5] = tara_registro;
 
+            taras = tara_botijao + tara_registro;
             peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
+            parametro_double[3] = peso_gas_inicial;
             peso_gas_atual = (peso_atual - (tara_botijao + tara_registro));
+            parametro_double[6] = peso_gas_atual;
             percentual_gas_atual = (peso_gas_atual / peso_gas_inicial) * 100;
+            parametro_double[8] = percentual_gas_atual;
+
 
             }
 
-            printf("\n");
-            printf("*******************************************************************************\n");//linha inicial
 
-            printf("Id ----------------------- = %.0f\n", id);
-            printf("Medicao ------------------ = %.0f\n", medicao);
 
-            duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
+
+
 
 
 
@@ -144,63 +242,163 @@ int main ()
             //duracao_atual = calculadora_de_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
 
             consumo_medio_diario = (peso_gas_inicial - peso_gas_atual) / duracao_atual;
+            parametro_double[7] = consumo_medio_diario;
             dias_remanecentes = peso_gas_atual / consumo_medio_diario;
+            parametro_double[9] = dias_remanecentes;
 
 
 
-            printf("Data inicial de consumo -- = %02li/%02li/%li\n", dia_inicial, mes_inicial, ano_inicial);// dia perdido
-            printf("Peso inicial do conjunto - = %.2f Kg\n", peso_total_inicial);
-            printf("Peso atual do conjunto --- = %.2f Kg\n", peso_atual);
-            printf("Peso inicial do gas ------ = %.2f Kg\n", peso_gas_inicial);
-            printf("Tara do botijao ---------- = %.2f Kg\n", tara_botijao);
-            printf("Tara do registro --------- = %.2f Kg\n", tara_registro);
-            printf("Peso atual do gas -------- = %.2f Kg\n", peso_gas_atual);
-            printf("Consumo medio diario ----- = %.3f kg/dia \n", consumo_medio_diario);
-            printf("Percentual atual --------- = %.2f %%\n", percentual_gas_atual, peso_gas_atual, peso_gas_inicial);
-            printf("Dias restantes ----------- = %d Dias\n", (int)dias_remanecentes);
-            printf("Previsao de termino ------ = ");
+            printf("\n");
+            printf("*******************************************************************************\n");//linha inicial
+
+            printf("Id ----------------------- = %li\n", parametro_int[0]);
+            printf("Medicao ------------------ = %li\n", parametro_int[1]);
+
+            printf("Duracao atual ------------ = ");
+            if(parametro_signed_long[6] > 0)
+            {
+                if(parametro_signed_long[6] == 1)
+                {
+                    printf("%li Ano ", parametro_signed_long[6]);
+                }
+                else
+                {
+                    printf("%li Anos ", parametro_signed_long[6]);
+                }
+            }
+            if(parametro_signed_long[5] > 0)
+            {
+                if(parametro_signed_long[5] == 1)
+                {
+                    printf("%.li Mes ", parametro_signed_long[5]);
+                }
+                else
+                {
+                    printf("%li Meses ", parametro_signed_long[5]);
+                }
+
+            }
+            if(parametro_signed_long[4] > 0)
+            {
+                if(parametro_signed_long[4] == 1)
+                {
+                    printf("%li Semana ", parametro_signed_long[4]);
+                }
+                else
+                {
+                    printf("%li Semanas ", parametro_signed_long[4]);
+                }
+            }
+            if(parametro_signed_long[3] > 0)
+            {
+                if(parametro_signed_long[3] == 1)
+                {
+                    printf("%li Dia ", parametro_signed_long[3]);
+                }
+                else
+                {
+                    printf("%li Dias ", parametro_signed_long[3]);
+                }
+            }
+            if(parametro_double[0] > 0)
+            {
+                printf("\nDuracao atual ------------ = %.0lf Dias\n", parametro_double[0]);
+            }
+
+            printf("Data da medicao ---------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
+            printf("Data inicial de consumo -- = %02li/%02li/%li\n", parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9]);
+            printf("Peso inicial do conjunto - = %.2lf Kg\n",  parametro_double[1]);
+            printf("Peso atual do conjunto --- = %.2lf Kg\n", parametro_double[2]);
+            printf("Peso inicial do gas ------ = %.2lf Kg\n", parametro_double[3]);
+            printf("Tara do botijao ---------- = %.2lf Kg\n", parametro_double[4]);
+            printf("Tara do registro --------- = %.2lf Kg\n", parametro_double[5]);
+            printf("Peso atual do gas -------- = %.2lf Kg\n", parametro_double[6]);
+            printf("Consumo medio diario ----- = %.3lf kg/dia \n", parametro_double[7]);
+            printf("Percentual atual --------- = %.2lf %%\n", parametro_double[8]);
+            printf("Dias restantes ----------- = %.0lf Dias\n", parametro_double[9]);
+
             opcao = 2;
             dias_a_calcular = dias_remanecentes;
             dia_da_semana = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
+            printf("Previsao de termino ------ = ");
+             //dia da semana
+            if(parametro_signed_long[13] == 0)
+            {
+                printf("Segunda-feira ");
+            }
+            else if(parametro_signed_long[13] == 1)
+            {
+                printf("Terca-feira ");
+            }
+            else if(parametro_signed_long[13] == 2)
+            {
+                printf("Quarta-feira ");
+            }
+            else if(parametro_signed_long[13] == 3)
+            {
+                printf("Quinta-feira ");
+            }
+            else if(parametro_signed_long[13] == 4)
+            {
+                printf("Sexta-feira ");
+            }
+            else if(parametro_signed_long[13] == 5)
+            {
+                printf("Sabado ");
+            }
+            else if(parametro_signed_long[13] == 6)
+            {
+                printf("Domingo ");
+            }
+            printf("%02li/%02li/%li\n" ,parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12]);
+
             //Não será mostrada esta variavel.
             //printf("Dia da semana ------------ = %d\n", dia_da_semana);
 
-            if(peso_gas_atual == 0)
+            parametro_signed_long[25] = parametro_signed_long[13];
+            if(parametro_double[6] == 0)
             {
                 printf("Data de termino ---------- = ");
                 //dia da semana
-                if(dia_da_semana == 0)
+                if(parametro_signed_long[25] == 0)
                 {
                     printf("Segunda-feira ");
                 }
-                else if(dia_da_semana == 1)
+                else if(parametro_signed_long[25] == 1)
                 {
                     printf("Terca-feira ");
                 }
-                else if(dia_da_semana == 2)
+                else if(parametro_signed_long[25] == 2)
                 {
                     printf("Quarta-feira ");
                 }
-                else if(dia_da_semana == 3)
+                else if(parametro_signed_long[25] == 3)
                 {
                     printf("Quinta-feira ");
                 }
-                else if(dia_da_semana == 4)
+                else if(parametro_signed_long[25] == 4)
                 {
                     printf("Sexta-feira ");
                 }
-                else if(dia_da_semana == 5)
+                else if(parametro_signed_long[25] == 5)
                 {
                     printf("Sabado ");
                 }
-                else if(dia_da_semana == 6)
+                else if(parametro_signed_long[25] == 6)
                 {
                     printf("Domingo ");
                 }
 
-                printf(" %02li/%02li/%li\n", dia_final, mes_final, ano_final);
-                printf("Duracao final ------------ = %li Dias\n", duracao_atual);
+                parametro_signed_long[18] = dia_final;
+                parametro_signed_long[19] = mes_final;
+                parametro_signed_long[20] = ano_final;
+
+                printf("%02li/%02li/%li\n", parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20]);
+
+                 parametro_double[10] = parametro_double[0];
+                 //printf("Duracao final ------------ = %li Dias\n", duracao_atual);
+                 printf("Duracao final ------------ = %.0lf Dias\n", parametro_double[10]);
             }
             printf("*******************************************************************************\n");//linha final
 
@@ -296,19 +494,31 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
 
     if(*popcao == 1)
     {
-        /*
         printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
-        scanf("%d/%d/%d", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
+        scanf("%ld/%ld/%ld", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
 
-        printf("Digite a data  de medicao. dd/mm/aaaa\n");
-        scanf("%d/%d/%d", &*pdia_final, &*pmes_final, &*pano_final);
-        */
+        parametro_signed_long[7] = *pdia_inicial;
+        parametro_signed_long[8] = *pmes_inicial;
+        parametro_signed_long[9] = *pano_inicial;
+
+        printf("Digite a data de medicao. dd/mm/aaaa\n");
+        scanf("%ld/%ld/%ld", &*pdia_final, &*pmes_final, &*pano_final);
+
+        parametro_signed_long[0] = *pdia_final;
+        parametro_signed_long[1] = *pmes_final;
+        parametro_signed_long[2] = *pano_final;
+
+        //printf("\n>>>parametro_signed_long[0] = %li<<<\n", parametro_signed_long[0]);
+
+        /*
         *pdia_inicial = 8;
         *pmes_inicial = 1;
         *pano_inicial = 2020;
         *pdia_final = 11;
         *pmes_final = 4;
         *pano_final = 2020;
+        */
+
         /*caso a primeira data seja maior que a segunda data*/
         while((*pano_inicial > *pano_final) || ((*pano_inicial == *pano_final) && (*pmes_inicial > *pmes_final)) || ((*pano_inicial == *pano_final) && (*pmes_inicial == *pmes_final) && (*pdia_inicial > *pdia_final)))
         {
@@ -1160,27 +1370,31 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         //30 Anos 8 Meses 1 Semana 2 Dias
         //Diferenca em dias = 11211
 
-        printf("Duracao atual ------------ = ");
+        //printf("Duracao atual ------------ = ");
         if(quant_anos > 0)
         {
             if(quant_anos == 1)
             {
-                printf("%li Ano ", quant_anos);
+                parametro_signed_long[6] = quant_anos;
+                //printf("%li Ano ", quant_anos);
             }
             else
             {
-                printf("%li Anos ", quant_anos);
+                parametro_signed_long[6] = quant_anos;
+                //printf("%li Anos ", quant_anos);
             }
         }
         if(quant_meses > 0)
         {
             if(quant_meses == 1)
             {
-                printf("%li Mes ", quant_meses);
+                parametro_signed_long[5] = quant_meses;
+                //printf("%li Mes ", quant_meses);
             }
             else
             {
-                printf("%li Meses ", quant_meses);
+                parametro_signed_long[5] = quant_meses;
+                //printf("%li Meses ", quant_meses);
             }
 
         }
@@ -1188,27 +1402,32 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         {
             if(quant_semanas == 1)
             {
-                printf("%li Semana ", quant_semanas);
+                parametro_signed_long[4] = quant_semanas;
+                //printf("%li Semana ", quant_semanas);
             }
             else
             {
-                printf("%li Semanas ", quant_semanas);
+                parametro_signed_long[4] = quant_semanas;
+                //printf("%li Semanas ", quant_semanas);
             }
         }
         if(quant_dias > 0)
         {
             if(quant_dias == 1)
             {
-                printf("%li Dia ", quant_dias);
+                parametro_signed_long[3] = quant_dias;
+                //printf("%li Dia ", quant_dias);
             }
             else
             {
-                printf("%li Dias ", quant_dias);
+                parametro_signed_long[3] = quant_dias;
+                //printf("%li Dias ", quant_dias);
             }
         }
         if(cont_dias > 0)
         {
-            printf("\nDuracao atual ------------ = %.0lf Dias\n", cont_dias);
+            parametro_double[0] = cont_dias;
+            //printf("\nDuracao atual ------------ = %.0lf Dias\n", cont_dias);
         }
         if(quant_anos == 0 && quant_meses == 0 && quant_semanas == 0 && quant_dias == 0 && cont_dias == 0)
         {
@@ -1237,6 +1456,7 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         opcaozero_s = 0;
 
         dia_da_semana = (calculadora_de_datas(&dia_inicial_s, &mes_inicial_s, &ano_inicial_s, &dia_final_s, &mes_final_s, &ano_final_s, &dias_a_calcular_s, &opcaozero_s) % 7);
+        parametro_signed_long[13] = dia_da_semana;
 
         /*
         Na data terca-feira 01/01/0001
@@ -1253,31 +1473,31 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
         //dia da semana
         if(dia_da_semana == 0)
         {
-            printf("Segunda-feira ");
+            //printf("Segunda-feira ");
         }
         else if(dia_da_semana == 1)
         {
-            printf("Terca-feira ");
+            //printf("Terca-feira ");
         }
         else if(dia_da_semana == 2)
         {
-            printf("Quarta-feira ");
+            //printf("Quarta-feira ");
         }
         else if(dia_da_semana == 3)
         {
-            printf("Quinta-feira ");
+            //printf("Quinta-feira ");
         }
         else if(dia_da_semana == 4)
         {
-            printf("Sexta-feira ");
+            //printf("Sexta-feira ");
         }
         else if(dia_da_semana == 5)
         {
-            printf("Sabado ");
+            //printf("Sabado ");
         }
         else if(dia_da_semana == 6)
         {
-            printf("Domingo ");
+            //printf("Domingo ");
         }
 
         //correcao do bug da opcao 3 entrada: 01/12/2020 menos 1 dia. Saida: 00/12/2020.
@@ -1296,7 +1516,11 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
             }
         }
 
-        printf(" %02li/%02li/%li\n" ,*pdia_final, *pmes_final, *pano_final);
+        //printf(" %02li/%02li/%li\n" ,*pdia_final, *pmes_final, *pano_final);
+        parametro_signed_long[10] = *pdia_final;
+        parametro_signed_long[11] = *pmes_final;
+        parametro_signed_long[12] = *pano_final;
+
 
         *pdia_inicial = guarda_dia_inicial;
 
