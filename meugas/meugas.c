@@ -6,6 +6,7 @@ double matriz_gas[100000][41];
 int parametro_int[3];
 long int parametro_signed_long[26];
 double parametro_double[12];
+long int ultima_linha;
 
 /*
 posicao          Parametros
@@ -150,6 +151,7 @@ int main ()
                 if((matriz_gas[i][0] == matriz_gas[i+1][0]) && (matriz_gas[i][1] == matriz_gas[i+1][1]))
                 {
                     matriz_gas[i+1][0] = 0;
+                    ultima_linha = i;
                     i = 100000;
                 }
             }
@@ -207,22 +209,35 @@ int main ()
 
         duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
-        printf("Digite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
-        scanf("%lf", &peso_total_inicial);
-        parametro_double[1] = peso_total_inicial;
+        //dados que so presisam ser digitados no caso de nova id.
+        if(parametro_int[1] == 1)
+        {
+            printf("Digite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
+            scanf("%lf", &peso_total_inicial);
+            parametro_double[1] = peso_total_inicial;
+
+            printf("Digite a tara do botijao em Kg.\n");
+            scanf("%lf", &tara_botijao);
+            parametro_double[4] = tara_botijao;
+
+            printf("Digite a tara do registro em Kg.\n");
+            scanf("%lf", &tara_registro);
+            parametro_double[5] = tara_registro;
+        }
+        else
+        {
+           peso_total_inicial = matriz_gas[ultima_linha][13];
+           tara_botijao = matriz_gas[ultima_linha][16];
+           tara_registro = matriz_gas[ultima_linha][17];
+
+           parametro_double[1] = peso_total_inicial;
+           parametro_double[4] = tara_botijao;
+           parametro_double[5] = tara_registro;
+        }
 
         printf("Digite o peso atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
         scanf("%lf", &peso_atual);
         parametro_double[2] = peso_atual;
-
-        printf("Digite a tara do botijao em Kg.\n");
-        scanf("%lf", &tara_botijao);
-        parametro_double[4] = tara_botijao;
-
-        printf("Digite a tara do registro em Kg.\n");
-        scanf("%lf", &tara_registro);
-        parametro_double[5] = tara_registro;
-
 
 /*
         peso_total_inicial = 28.4;
@@ -284,8 +299,6 @@ int main ()
             parametro_double[7] = consumo_medio_diario;
             dias_remanecentes = peso_gas_atual / consumo_medio_diario;
             parametro_double[9] = dias_remanecentes;
-
-
 
             printf("\n");
             printf("*******************************************************************************\n");//linha inicial
@@ -442,6 +455,7 @@ int main ()
                 signed long duracao_final_meses = 0;//parametro_signed_long[23];
                 signed long duracao_final_anos = 0;//parametro_signed_long[24];
 
+                //passando os valores para a duracao final
                 parametro_signed_long[21] = parametro_signed_long[3];
                 parametro_signed_long[22] = parametro_signed_long[4];
                 parametro_signed_long[23] = parametro_signed_long[5];
@@ -542,6 +556,12 @@ int main ()
             printf("\nDeseja realizar outro calculo? ""1""(sim) ou ""0""(nao).\n");
             scanf("%i", &repetir);
             opcao = -1;
+
+            //zerando as variaveis para o proximo looping
+            parametro_signed_long[6] = 0;
+            parametro_signed_long[5] = 0;
+            parametro_signed_long[4] = 0;
+            parametro_signed_long[3] = 0;
         }
 
 
@@ -572,12 +592,33 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
 
     if(*popcao == 1)
     {
-        printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
-        scanf("%ld/%ld/%ld", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
+        //se medicao igual a 1, entao nao presisa ler do teclado o data inicial de utilizacao.
+        //vamos ler as informacoes da linha acima.
+        if(parametro_int[1] == 1)
+        {
+            printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
+            scanf("%ld/%ld/%ld", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
 
-        parametro_signed_long[7] = *pdia_inicial;
-        parametro_signed_long[8] = *pmes_inicial;
-        parametro_signed_long[9] = *pano_inicial;
+            parametro_signed_long[7] = *pdia_inicial;
+            parametro_signed_long[8] = *pmes_inicial;
+            parametro_signed_long[9] = *pano_inicial;
+        }
+        else
+        {
+            printf("\nultima_linha = %li\n", ultima_linha);
+            printf("\nmatriz_gas[ultima_linha][10] = %lf\n", matriz_gas[ultima_linha][10]);
+            parametro_signed_long[7] = matriz_gas[ultima_linha][10];
+            parametro_signed_long[8] = matriz_gas[ultima_linha][11];
+            parametro_signed_long[9] = matriz_gas[ultima_linha][12];
+
+
+
+            *pdia_inicial = parametro_signed_long[7];
+            *pmes_inicial = parametro_signed_long[8];
+            *pano_inicial = parametro_signed_long[9];
+
+
+        }
 
         printf("Digite a data de medicao. dd/mm/aaaa\n");
         scanf("%ld/%ld/%ld", &*pdia_final, &*pmes_final, &*pano_final);
