@@ -138,6 +138,7 @@ int main ()
     int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
     void ler_arquivo_gas_data();
     void capturar_dados_gas_data();
+    void calcula_duracao_media_global_dias();
 
      while(repetir == 1)
         {
@@ -513,6 +514,11 @@ int main ()
                  //printf("Duracao final ------------ = %li Dias\n", duracao_atual);
                  printf("\nDuracao final ------------ = %.0lf Dias\n", parametro_double[10]);
             }
+
+            calcula_duracao_media_global_dias();
+
+            printf("Duracao media global ----- = %i Dias\n", parametro_int[2]);
+
             printf("*******************************************************************************\n");//linha final
 
             printf("\nDeseja salvar os dados no arquivo gas.data? 1(sim) ou 0(nao).\n");
@@ -1849,4 +1855,38 @@ void capturar_dados_gas_data()
     /*fechando o arquivo*/
     fclose(file);
 
+}
+void calcula_duracao_media_global_dias()
+{
+    int i;
+    double soma = 0;
+    int quantidade = 0;
+
+    //parametro_int[2] = 0;
+    for(i = 0; i <= ultima_linha; i++)
+    {
+        if(matriz_gas[i][39] > 0)
+        {
+            quantidade++;
+        }
+
+       soma = soma + matriz_gas[i][39];
+       //printf("\n%lf =  %lf + %lf\n", soma, soma, matriz_gas[i][39]);
+       //printf("\nmatriz_gas[%i][39] = %lf\n", i, matriz_gas[i][39]);
+       //printf("\nmatriz_gas[%i + 1][39] = %lf\n", i, matriz_gas[i + 1][39]);
+    }
+
+    if((parametro_double[10] > 0) && (parametro_double[6] == 0))
+    {
+        soma = soma + parametro_double[10];
+        quantidade++;
+    }
+
+
+    parametro_int[2] = soma/quantidade;
+    //printf("\ni = %i\n", i);
+    //printf("\nultima linha = %i\n", ultima_linha);
+    //printf("\nsoma = %lf\n", soma);
+    //printf("\nquantidade = %i\n", quantidade);
+    //printf("\nparametro_double[10] = %lf\n", parametro_double[10]);
 }
