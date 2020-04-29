@@ -623,6 +623,25 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
         //validar data e calcular a data inicial mais os dias.
         cont_dias = validar_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
     }
+    else if(*popcao == 3)
+    {
+        *pdia_inicial = *pdia_final;
+        *pmes_inicial = *pmes_final;
+        *pano_inicial = *pano_final;
+
+        guarda_dias_calcular = *pdias_a_calcular;
+
+        //recuperar o valor original de *pdias_a_calcular.
+        *pdias_a_calcular = guarda_dias_calcular;
+
+        *pdia_final = 31;
+        *pmes_final = 12;
+        *pano_final = 9999999;
+
+
+        //validar data e calcular a data inicial mais os dias.
+        cont_dias = validar_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
+    }
 
     return cont_dias;
 }
