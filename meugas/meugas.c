@@ -2,10 +2,10 @@
 #include <math.h>
 
 /*Vetores e matrizes globais para passar os dados para o arquivo gas.data*/
-double matriz_gas[100000][41];
+double matriz_gas[100000][43];
 int parametro_int[3];
 long int parametro_signed_long[26];
-double parametro_double[12];
+double parametro_double[14];
 long int ultima_linha;
 
 /*
@@ -36,21 +36,23 @@ posicao          Parametros
 23 signed long previsao_de_termino_mes ------------------- = parametro_signed_long[11];( ok )
 24 signed long previsao_de_termino_ano ------------------- = parametro_signed_long[12];( ok )
 25 signed long previsao_de_termino_dia_da_semana --------- = parametro_signed_long[13];( ok )
-26 int duracao_media_global_dias ------------------------- = parametro_int[2];(ok) //implementar
-27 signed long previsao_de_acordo_com_a_media_global_dia - = parametro_signed_long[14];(ok) //implementar
-28 signed long previsao_de_acordo_com_a_media_global_mes - = parametro_signed_long[15];(ok) //implementar
-29 signed long previsao_de_acordo_com_a_media_global_ano - = parametro_signed_long[16];(ok) //implementar
-30 signed long previsao_de_acordo_com_a_media_global_dia_da_semana - = parametro_signed_long[17];(ok) //implementar
+26 int duracao_media_global_dias ------------------------- = parametro_int[2];(ok)
+27 signed long previsao_de_acordo_com_a_media_global_dia - = parametro_signed_long[14];(ok)
+28 signed long previsao_de_acordo_com_a_media_global_mes - = parametro_signed_long[15];(ok)
+29 signed long previsao_de_acordo_com_a_media_global_ano - = parametro_signed_long[16];(ok)
+30 signed long previsao_de_acordo_com_a_media_global_dia_da_semana - = parametro_signed_long[17];(ok)
 31 int data_de_termino_dia_da_semana --------------------- = parametro_signed_long[25];(ok)
 32 signed long data_de_termino_dia ----------------------- = parametro_signed_long[18];(ok)
 33 signed long data_de_termino_mes ----------------------- = parametro_signed_long[19];(ok)
 34 signed long data_de_termino_ano ----------------------- = parametro_signed_long[20];(ok)
-35 signed long duracao_final_dias ------------------------ = parametro_signed_long[21];(ok) //implementar
-36 signed long duracao_final_semanas --------------------- = parametro_signed_long[22];(ok) //implementar
-37 signed long duracao_final_meses ----------------------- = parametro_signed_long[23];(ok) //implementar
-38 signed long duracao_final_anos ------------------------ = parametro_signed_long[24];(ok) //implementar
+35 signed long duracao_final_dias ------------------------ = parametro_signed_long[21];(ok)
+36 signed long duracao_final_semanas --------------------- = parametro_signed_long[22];(ok)
+37 signed long duracao_final_meses ----------------------- = parametro_signed_long[23];(ok)
+38 signed long duracao_final_anos ------------------------ = parametro_signed_long[24];(ok)
 39 int duracao_final_em_dias ----------------------------- = parametro_double[10];(ok)
-40 double consumo_medio_global --------------------------- = parametro_double[11];(ok) //implementar
+40 double consumo_medio_global --------------------------- = parametro_double[11];()//implementar
+41 double preco_do_gas ----------------------------------- = parametro_double[12];()//implementar
+42 double gasto_medio_diario ----------------------------- = parametro_double[13];()//implementar
 */
 /*
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -136,14 +138,15 @@ int main ()
     int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
     int validar_datas(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
     int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, signed long *pano_inicial, signed long *pdia_final, signed long *pmes_final, signed long *pano_final, signed long *pdias_a_calcular, signed long *popcao);
-    void ler_arquivo_gas_data();
-    void capturar_dados_gas_data();
+    void atualizar_banco_de_dados();
+    void consultar_banco_de_dados();
     void calcula_duracao_media_global_dias();
+    void calcula_preco_medio();
 
      while(repetir == 1)
         {
 
-            capturar_dados_gas_data();
+            consultar_banco_de_dados();
 
             //quando chega ao final do arquivo o programa comeca a repetir a ultima linha valida
             //vamos procurar esta repeticao. Quando a repeticao for encontrada declarar o primeiro elemento da linha como zero.
@@ -165,7 +168,7 @@ int main ()
 
                 printf("\nIniciando captura de dados.");
                 printf("\nId ------------------------------------------------ = %i", id);
-                printf("\nMedicao ------------------------------------------- = %i\n", medicao);
+                printf("\nPesagem ------------------------------------------- = %i\n\n", medicao);
                 parametro_int[0] = id;
                 parametro_int[1] = medicao;
             }
@@ -188,7 +191,7 @@ int main ()
                             medicao = 1;
                             printf("\nIniciando captura de dados.");
                             printf("\nId ------------------------------------------------ = %i", id);
-                            printf("\nMedicao ------------------------------------------- = %i\n", medicao);
+                            printf("\nPesagem ------------------------------------------- = %i\n\n", medicao);
                             parametro_int[0] = id;
                             parametro_int[1] = medicao;
                         }
@@ -198,7 +201,7 @@ int main ()
                             medicao = matriz_gas[i][1] + 1;
                             printf("\nIniciando captura de dados.");
                             printf("\nId ------------------------------------------------ = %i", id);
-                            printf("\nMedicao ------------------------------------------- = %i\n", medicao);
+                            printf("\nPesagem ------------------------------------------- = %i\n\n", medicao);
                             parametro_int[0] = id;
                             parametro_int[1] = medicao;
                         }
@@ -213,6 +216,9 @@ int main ()
         //dados que so presisam ser digitados no caso de nova id.
         if(parametro_int[1] == 1)
         {
+            printf("\nDigite o valor pago pelo gas em Reais.\n");
+            scanf("%lf", &parametro_double[12]);
+
             printf("Digite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_total_inicial);
             parametro_double[1] = peso_total_inicial;
@@ -240,12 +246,12 @@ int main ()
         scanf("%lf", &peso_atual);
         parametro_double[2] = peso_atual;
 
-/*
+        /*
         peso_total_inicial = 28.4;
         peso_atual = 15.4;
         tara_botijao = 15.1;
         tara_registro = 0.3;
-*/
+        */
 
 
         taras = tara_botijao + tara_registro;
@@ -257,19 +263,22 @@ int main ()
         parametro_double[8] = percentual_gas_atual;
 
         //Erro. Peso atual do gas eh negativo
-        while(peso_gas_atual < 0)
+        while(peso_gas_atual < 0 || (peso_atual > peso_total_inicial) || (parametro_double[12] < 0))
         {
-            printf("\npeso atual do gas = %f\n", peso_gas_atual);
+            printf("\nErro.\n");
+            printf("\nPeso atual do gas = %f\n", peso_gas_atual);
+            printf("\nPeso inicial do conjunto = %f\n", peso_total_inicial);
+            printf("\nPeso atual do conjunto = %f\n", peso_atual);
+            printf("\nPreco do gas = %f\n", parametro_double[12]);
 
-            printf("\nErro. O peso atual do gas nao pode ser negativo.\nVerifique as entradas e digite novamente.\n");
+            printf("\nO peso atual do gas nao pode ser negativo.\nO peso atual do conjunto nao pode ser maior que o peso inicial.\nO preco do gas nao pode ser negativo.\nVerifique as entradas e digite novamente.\n\n");
 
-            printf("\nDigite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
+            printf("Digite o valor pago pelo gas em Reais.\n");
+            scanf("%lf", &parametro_double[12]);
+
+            printf("Digite o peso inicial do conjunto em Kg. (Botijao + Gas + Registro).\n");
             scanf("%lf", &peso_total_inicial);
             parametro_double[1] = peso_total_inicial;
-
-            printf("Digite o peso atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
-            scanf("%lf", &peso_atual);
-            parametro_double[2] = peso_atual;
 
             printf("Digite a tara do botijao em Kg.\n");
             scanf("%lf", &tara_botijao);
@@ -278,6 +287,10 @@ int main ()
             printf("Digite a tara do registro em Kg.\n");
             scanf("%lf", &tara_registro);
             parametro_double[5] = tara_registro;
+
+            printf("Digite o peso atual do conjunto em Kg. (Botijao + Gas + Registro).\n");
+            scanf("%lf", &peso_atual);
+            parametro_double[2] = peso_atual;
 
             taras = tara_botijao + tara_registro;
             peso_gas_inicial = peso_total_inicial - tara_botijao - tara_registro;
@@ -301,8 +314,8 @@ int main ()
             printf("\n");
             printf("*******************************************************************************\n");//linha inicial
 
-            printf("Id ------------------------------------------------ = %li\n", parametro_int[0]);
-            printf("Medicao ------------------------------------------- = %li\n", parametro_int[1]);
+            printf("Id ------------------------------------------------ = %i\n", parametro_int[0]);
+            printf("Pesagem ------------------------------------------- = %i\n", parametro_int[1]);
 
             printf("Duracao atual ------------------------------------- = ");
             if(parametro_signed_long[6] > 0)
@@ -355,8 +368,9 @@ int main ()
                 printf("\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
             }
 
-            printf("Data da medicao ----------------------------------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
+            printf("Data da pesagem ----------------------------------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
             printf("Data inicial de consumo --------------------------- = %02li/%02li/%li\n", parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9]);
+            printf("Preco do gas -------------------------------------- = R$ %.2lf\n",  parametro_double[12]);
             printf("Peso inicial do conjunto -------------------------- = %.2lf Kg\n",  parametro_double[1]);
             printf("Peso atual do conjunto ---------------------------- = %.2lf Kg\n", parametro_double[2]);
             printf("Peso inicial do gas ------------------------------- = %.2lf Kg\n", parametro_double[3]);
@@ -409,8 +423,6 @@ int main ()
             parametro_signed_long[25] = parametro_signed_long[13];
             if(parametro_double[6] == 0)
             {
-
-
                 printf("Data de termino ----------------------------------- = ");
                 //dia da semana
                 if(parametro_signed_long[25] == 0)
@@ -460,61 +472,66 @@ int main ()
                 parametro_signed_long[24] = parametro_signed_long[6];
 
                  printf("Duracao final ------------------------------------- = ");
-            if(parametro_signed_long[24] > 0)
-            {
-                if(parametro_signed_long[24] == 1)
+                if(parametro_signed_long[24] > 0)
                 {
-                    printf("%li Ano ", parametro_signed_long[24]);
+                    if(parametro_signed_long[24] == 1)
+                    {
+                        printf("%li Ano ", parametro_signed_long[24]);
+                    }
+                    else
+                    {
+                        printf("%li Anos ", parametro_signed_long[24]);
+                    }
                 }
-                else
+                if(parametro_signed_long[23] > 0)
                 {
-                    printf("%li Anos ", parametro_signed_long[24]);
-                }
-            }
-            if(parametro_signed_long[23] > 0)
-            {
-                if(parametro_signed_long[23] == 1)
-                {
-                    printf("%.li Mes ", parametro_signed_long[23]);
-                }
-                else
-                {
-                    printf("%li Meses ", parametro_signed_long[23]);
-                }
+                    if(parametro_signed_long[23] == 1)
+                    {
+                        printf("%.li Mes ", parametro_signed_long[23]);
+                    }
+                    else
+                    {
+                        printf("%li Meses ", parametro_signed_long[23]);
+                    }
 
-            }
-            if(parametro_signed_long[22] > 0)
-            {
-                if(parametro_signed_long[22] == 1)
-                {
-                    printf("%li Semana ", parametro_signed_long[22]);
                 }
-                else
+                if(parametro_signed_long[22] > 0)
                 {
-                    printf("%li Semanas ", parametro_signed_long[22]);
+                    if(parametro_signed_long[22] == 1)
+                    {
+                        printf("%li Semana ", parametro_signed_long[22]);
+                    }
+                    else
+                    {
+                        printf("%li Semanas ", parametro_signed_long[22]);
+                    }
                 }
-            }
-            if(parametro_signed_long[21] > 0)
-            {
-                if(parametro_signed_long[21] == 1)
+                if(parametro_signed_long[21] > 0)
                 {
-                    printf("%li Dia ", parametro_signed_long[21]);
+                    if(parametro_signed_long[21] == 1)
+                    {
+                        printf("%li Dia ", parametro_signed_long[21]);
+                    }
+                    else
+                    {
+                        printf("%li Dias ", parametro_signed_long[21]);
+                    }
                 }
-                else
-                {
-                    printf("%li Dias ", parametro_signed_long[21]);
-                }
-            }
 
 
                  parametro_double[10] = parametro_double[0];
                  //printf("Duracao final ------------ = %li Dias\n", duracao_atual);
                  printf("\nDuracao final ------------------------------------- = %.0lf Dias\n", parametro_double[10]);
+
+                //calculando o gasto medio diario
+                parametro_double[13] = parametro_double[12]/parametro_double[10];
+                printf("Gasto medio diario -------------------------------- = R$ %.2lf\n" ,parametro_double[13]);
+
+                calcula_duracao_media_global_dias();
+
+                printf("Duracao media ------------------------------------- = %i Dias\n", parametro_int[2]);
+
             }
-
-            calcula_duracao_media_global_dias();
-
-            printf("Duracao media ------------------------------------- = %i Dias\n", parametro_int[2]);
 
             opcao = 3;
             dias_a_calcular = parametro_int[2];
@@ -543,38 +560,40 @@ int main ()
             //printf("\nopcao = %li\n", opcao);
             dia_da_semana = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
-            printf("Previsao de termino de acordo com a duracao media - = ");
-             //dia da semana
-            if(parametro_signed_long[17] == 0)
+            if(parametro_int[2] > 0)
             {
-                printf("Segunda-feira ");
+                printf("Previsao de termino de acordo com a duracao media - = ");
+                 //dia da semana
+                if(parametro_signed_long[17] == 0)
+                {
+                    printf("Segunda-feira ");
+                }
+                else if(parametro_signed_long[17] == 1)
+                {
+                    printf("Terca-feira ");
+                }
+                else if(parametro_signed_long[17] == 2)
+                {
+                    printf("Quarta-feira ");
+                }
+                else if(parametro_signed_long[13] == 3)
+                {
+                    printf("Quinta-feira ");
+                }
+                else if(parametro_signed_long[17] == 4)
+                {
+                    printf("Sexta-feira ");
+                }
+                else if(parametro_signed_long[17] == 5)
+                {
+                    printf("Sabado ");
+                }
+                else if(parametro_signed_long[17] == 6)
+                {
+                    printf("Domingo ");
+                }
+                printf("%02li/%02li/%li\n" ,parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16]);
             }
-            else if(parametro_signed_long[17] == 1)
-            {
-                printf("Terca-feira ");
-            }
-            else if(parametro_signed_long[17] == 2)
-            {
-                printf("Quarta-feira ");
-            }
-            else if(parametro_signed_long[13] == 3)
-            {
-                printf("Quinta-feira ");
-            }
-            else if(parametro_signed_long[17] == 4)
-            {
-                printf("Sexta-feira ");
-            }
-            else if(parametro_signed_long[17] == 5)
-            {
-                printf("Sabado ");
-            }
-            else if(parametro_signed_long[17] == 6)
-            {
-                printf("Domingo ");
-            }
-            printf("%02li/%02li/%li\n" ,parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16]);
-
             printf("*******************************************************************************\n");//linha final
 
             printf("\nDeseja salvar os dados no arquivo gas.data? 1(sim) ou 0(nao).\n");
@@ -587,7 +606,7 @@ int main ()
                 if(salvar == 1)
                 {
                     printf("\nDados salvos em gas.data.\nSempre faca backup.");
-                    ler_arquivo_gas_data();
+                    atualizar_banco_de_dados();
                 }
                 else if(salvar == 0)
                 {
@@ -611,7 +630,7 @@ int main ()
             scanf("%d", &mostrar);
             if(mostrar == 1)
             {
-                capturar_dados_gas_data();
+                consultar_banco_de_dados();
             }
             mostrar = 0;
 
@@ -667,8 +686,8 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
         }
         else
         {
-            printf("\nultima_linha = %li\n", ultima_linha);
-            printf("\nmatriz_gas[ultima_linha][10] = %lf\n", matriz_gas[ultima_linha][10]);
+            //printf("\nultima_linha = %li\n", ultima_linha);
+            //printf("\nmatriz_gas[ultima_linha][10] = %lf\n", matriz_gas[ultima_linha][10]);
             parametro_signed_long[7] = matriz_gas[ultima_linha][10];
             parametro_signed_long[8] = matriz_gas[ultima_linha][11];
             parametro_signed_long[9] = matriz_gas[ultima_linha][12];
@@ -682,7 +701,7 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
 
         }
 
-        printf("Digite a data de medicao. dd/mm/aaaa\n");
+        printf("Digite a data de pesagem. dd/mm/aaaa\n");
         scanf("%ld/%ld/%ld", &*pdia_final, &*pmes_final, &*pano_final);
 
         parametro_signed_long[0] = *pdia_final;
@@ -703,13 +722,13 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
         /*caso a primeira data seja maior que a segunda data*/
         while((*pano_inicial > *pano_final) || ((*pano_inicial == *pano_final) && (*pmes_inicial > *pmes_final)) || ((*pano_inicial == *pano_final) && (*pmes_inicial == *pmes_final) && (*pdia_inicial > *pdia_final)))
         {
-            printf("ERRO.\nData de medicao anterior a data inicial de utilizacao.\n");
+            printf("ERRO.\nData de pesagem anterior a data inicial de utilizacao.\n");
 
             printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
-            scanf("%d/%d/%d", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
+            scanf("%li/%li/%li", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
 
-            printf("Digite a data  de medicao. dd/mm/aaaa\n");
-            scanf("%d/%d/%d", &*pdia_final, &*pmes_final, &*pano_final);
+            printf("Digite a data  de pesagem. dd/mm/aaaa\n");
+            scanf("%li/%li/%li", &*pdia_final, &*pmes_final, &*pano_final);
         }
 
          cont_dias = validar_datas(&*pdia_inicial, &*pmes_inicial, &*pano_inicial, &*pdia_final, &*pmes_final, &*pano_final, &*pdias_a_calcular, &*popcao);
@@ -1895,15 +1914,17 @@ int calculadora_de_datas(signed long *pdia_inicial, signed long *pmes_inicial, s
     }
 
 }
-void ler_arquivo_gas_data()
+void atualizar_banco_de_dados()
 {
     //printf("\nFUNCAO LER_ARQUIVO_GAS.DATA.\n");
 
-    /*criando a variavel ponteiro para o arquivo.*/
+    /*criando as variaveis ponteiro para os arquivos.*/
     FILE *file;
+    FILE *file2;
 
-    //abrindo arquivo
-    file = fopen("gas.data","a+");
+    //abrindo arquivos
+    file = fopen("banco_de_dados.data","a+");
+    file2 = fopen("historico_de_consumo.txt","a+");
 
     /*Escrevendo no arquivo*/
     /*
@@ -1923,17 +1944,257 @@ void ler_arquivo_gas_data()
     -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     */
 
-    fprintf(file,"%i,%i,%li,%li,%li,%li,%li,%li,%li,%lf,%li,%li,%li,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%li,%li,%li,%li,%i,%li,%li,%li,%li,%i,%li,%li,%li,%li,%li,%li,%li,%lf,%lf\n", parametro_int[0], parametro_int[1], parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2], parametro_signed_long[3], parametro_signed_long[4], parametro_signed_long[5], parametro_signed_long[6], parametro_double[0], parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9], parametro_double[1], parametro_double[2], parametro_double[3], parametro_double[4], parametro_double[5], parametro_double[6], parametro_double[7], parametro_double[8], parametro_double[9], parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12], parametro_signed_long[13], parametro_int[2], parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16], parametro_signed_long[17], parametro_signed_long[25], parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20], parametro_signed_long[21], parametro_signed_long[22], parametro_signed_long[23], parametro_signed_long[24], parametro_double[10], parametro_double[11]);
+    fprintf(file,"%i,%i,%li,%li,%li,%li,%li,%li,%li,%lf,%li,%li,%li,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%li,%li,%li,%li,%i,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%lf,%lf,%lf,%lf\n", parametro_int[0], parametro_int[1], parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2], parametro_signed_long[3], parametro_signed_long[4], parametro_signed_long[5], parametro_signed_long[6], parametro_double[0], parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9], parametro_double[1], parametro_double[2], parametro_double[3], parametro_double[4], parametro_double[5], parametro_double[6], parametro_double[7], parametro_double[8], parametro_double[9], parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12], parametro_signed_long[13], parametro_int[2], parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16], parametro_signed_long[17], parametro_signed_long[25], parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20], parametro_signed_long[21], parametro_signed_long[22], parametro_signed_long[23], parametro_signed_long[24], parametro_double[10], parametro_double[11], parametro_double[12], parametro_double[13]);
 
-    /*fechando o arquivo*/
+    fprintf(file2,"\n");
+            fprintf(file2,"*******************************************************************************\n");//linha inicial
+
+            fprintf(file2,"Id ------------------------------------------------ = %i\n", parametro_int[0]);
+            fprintf(file2,"Pesagem ------------------------------------------- = %i\n", parametro_int[1]);
+
+            fprintf(file2,"Duracao atual ------------------------------------- = ");
+            if(parametro_signed_long[6] > 0)
+            {
+                if(parametro_signed_long[6] == 1)
+                {
+                    fprintf(file2,"%li Ano ", parametro_signed_long[6]);
+                }
+                else
+                {
+                    fprintf(file2,"%li Anos ", parametro_signed_long[6]);
+                }
+            }
+            if(parametro_signed_long[5] > 0)
+            {
+                if(parametro_signed_long[5] == 1)
+                {
+                    fprintf(file2,"%.li Mes ", parametro_signed_long[5]);
+                }
+                else
+                {
+                    fprintf(file2,"%li Meses ", parametro_signed_long[5]);
+                }
+
+            }
+            if(parametro_signed_long[4] > 0)
+            {
+                if(parametro_signed_long[4] == 1)
+                {
+                    fprintf(file2,"%li Semana ", parametro_signed_long[4]);
+                }
+                else
+                {
+                    fprintf(file2,"%li Semanas ", parametro_signed_long[4]);
+                }
+            }
+            if(parametro_signed_long[3] > 0)
+            {
+                if(parametro_signed_long[3] == 1)
+                {
+                    fprintf(file2,"%li Dia ", parametro_signed_long[3]);
+                }
+                else
+                {
+                    fprintf(file2,"%li Dias ", parametro_signed_long[3]);
+                }
+            }
+            if(parametro_double[0] > 0)
+            {
+                fprintf(file2,"\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
+            }
+
+            fprintf(file2,"Data da pesagem ----------------------------------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
+            fprintf(file2,"Data inicial de consumo --------------------------- = %02li/%02li/%li\n", parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9]);
+            fprintf(file2,"Preco do gas -------------------------------------- = R$ %.2lf\n",  parametro_double[12]);
+            fprintf(file2,"Peso inicial do conjunto -------------------------- = %.2lf Kg\n",  parametro_double[1]);
+            fprintf(file2,"Peso atual do conjunto ---------------------------- = %.2lf Kg\n", parametro_double[2]);
+            fprintf(file2,"Peso inicial do gas ------------------------------- = %.2lf Kg\n", parametro_double[3]);
+            fprintf(file2,"Tara do botijao ----------------------------------- = %.2lf Kg\n", parametro_double[4]);
+            fprintf(file2,"Tara do registro ---------------------------------- = %.2lf Kg\n", parametro_double[5]);
+            fprintf(file2,"Peso atual do gas --------------------------------- = %.2lf Kg\n", parametro_double[6]);
+            fprintf(file2,"Consumo medio diario ------------------------------ = %.3lf kg/dia \n", parametro_double[7]);
+            fprintf(file2,"Percentual atual ---------------------------------- = %.2lf %%\n", parametro_double[8]);
+            fprintf(file2,"Dias restantes ------------------------------------ = %.0lf Dias\n", parametro_double[9]);
+
+            fprintf(file2,"Previsao de termino ------------------------------- = ");
+             //dia da semana
+            if(parametro_signed_long[13] == 0)
+            {
+                fprintf(file2,"Segunda-feira ");
+            }
+            else if(parametro_signed_long[13] == 1)
+            {
+                fprintf(file2,"Terca-feira ");
+            }
+            else if(parametro_signed_long[13] == 2)
+            {
+                fprintf(file2,"Quarta-feira ");
+            }
+            else if(parametro_signed_long[13] == 3)
+            {
+                fprintf(file2,"Quinta-feira ");
+            }
+            else if(parametro_signed_long[13] == 4)
+            {
+                fprintf(file2,"Sexta-feira ");
+            }
+            else if(parametro_signed_long[13] == 5)
+            {
+                fprintf(file2,"Sabado ");
+            }
+            else if(parametro_signed_long[13] == 6)
+            {
+                fprintf(file2,"Domingo ");
+            }
+            fprintf(file2,"%02li/%02li/%li\n" ,parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12]);
+
+            parametro_signed_long[25] = parametro_signed_long[13];
+            if(parametro_double[6] == 0)
+            {
+                fprintf(file2,"Data de termino ----------------------------------- = ");
+                //dia da semana
+                if(parametro_signed_long[25] == 0)
+                {
+                    fprintf(file2,"Segunda-feira ");
+                }
+                else if(parametro_signed_long[25] == 1)
+                {
+                    fprintf(file2,"Terca-feira ");
+                }
+                else if(parametro_signed_long[25] == 2)
+                {
+                    fprintf(file2,"Quarta-feira ");
+                }
+                else if(parametro_signed_long[25] == 3)
+                {
+                    fprintf(file2,"Quinta-feira ");
+                }
+                else if(parametro_signed_long[25] == 4)
+                {
+                    fprintf(file2,"Sexta-feira ");
+                }
+                else if(parametro_signed_long[25] == 5)
+                {
+                    fprintf(file2,"Sabado ");
+                }
+                else if(parametro_signed_long[25] == 6)
+                {
+                    fprintf(file2,"Domingo ");
+                }
+
+                fprintf(file2,"%02li/%02li/%li\n", parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20]);
+
+                signed long duracao_final_dias = 0;//parametro_signed_long[21];
+                signed long duracao_final_semanas = 0;//parametro_signed_long[22];
+                signed long duracao_final_meses = 0;//parametro_signed_long[23];
+                signed long duracao_final_anos = 0;//parametro_signed_long[24];
+
+                 fprintf(file2,"Duracao final ------------------------------------- = ");
+                if(parametro_signed_long[24] > 0)
+                {
+                    if(parametro_signed_long[24] == 1)
+                    {
+                        fprintf(file2,"%li Ano ", parametro_signed_long[24]);
+                    }
+                    else
+                    {
+                        fprintf(file2,"%li Anos ", parametro_signed_long[24]);
+                    }
+                }
+                if(parametro_signed_long[23] > 0)
+                {
+                    if(parametro_signed_long[23] == 1)
+                    {
+                        fprintf(file2,"%.li Mes ", parametro_signed_long[23]);
+                    }
+                    else
+                    {
+                        fprintf(file2,"%li Meses ", parametro_signed_long[23]);
+                    }
+
+                }
+                if(parametro_signed_long[22] > 0)
+                {
+                    if(parametro_signed_long[22] == 1)
+                    {
+                        fprintf(file2,"%li Semana ", parametro_signed_long[22]);
+                    }
+                    else
+                    {
+                        fprintf(file2,"%li Semanas ", parametro_signed_long[22]);
+                    }
+                }
+                if(parametro_signed_long[21] > 0)
+                {
+                    if(parametro_signed_long[21] == 1)
+                    {
+                        fprintf(file2,"%li Dia ", parametro_signed_long[21]);
+                    }
+                    else
+                    {
+                        fprintf(file2,"%li Dias ", parametro_signed_long[21]);
+                    }
+                }
+
+
+                 parametro_double[10] = parametro_double[0];
+                 //printf("Duracao final ------------ = %li Dias\n", duracao_atual);
+                 fprintf(file2,"\nDuracao final ------------------------------------- = %.0lf Dias\n", parametro_double[10]);
+
+                //calculando o gasto medio diario
+                parametro_double[13] = parametro_double[12]/parametro_double[10];
+                fprintf(file2,"Gasto medio diario -------------------------------- = R$ %.2lf\n" ,parametro_double[13]);
+
+                fprintf(file2,"Duracao media ------------------------------------- = %i Dias\n", parametro_int[2]);
+
+            }
+
+            fprintf(file2,"Previsao de termino de acordo com a duracao media - = ");
+             //dia da semana
+            if(parametro_signed_long[17] == 0)
+            {
+                fprintf(file2,"Segunda-feira ");
+            }
+            else if(parametro_signed_long[17] == 1)
+            {
+                fprintf(file2,"Terca-feira ");
+            }
+            else if(parametro_signed_long[17] == 2)
+            {
+                fprintf(file2,"Quarta-feira ");
+            }
+            else if(parametro_signed_long[13] == 3)
+            {
+                fprintf(file2,"Quinta-feira ");
+            }
+            else if(parametro_signed_long[17] == 4)
+            {
+                fprintf(file2,"Sexta-feira ");
+            }
+            else if(parametro_signed_long[17] == 5)
+            {
+                fprintf(file2,"Sabado ");
+            }
+            else if(parametro_signed_long[17] == 6)
+            {
+                fprintf(file2,"Domingo ");
+            }
+            fprintf(file2,"%02li/%02li/%li\n" ,parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16]);
+
+            fprintf(file2,"*******************************************************************************\n");//linha final
+
+
+
+    /*fechando o arquivos*/
     fclose(file);
+    fclose(file2);
 
 }
-void capturar_dados_gas_data()
+void consultar_banco_de_dados()
 {
-    //printf("\nFUNCAO LER_ARQUIVO_GAS.DATA.\n");
     int i, j;
 
+    double atributo_0 = 0;
     double atributo_1 = 0;
     double atributo_2 = 0;
     double atributo_3 = 0;
@@ -1975,7 +2236,7 @@ void capturar_dados_gas_data()
     double atributo_39 = 0;
     double atributo_40 = 0;
     double atributo_41 = 0;
-
+    double atributo_42 = 0;
 
     /*
     //zerando todos os elementos da matriz_do_gas
@@ -1992,12 +2253,12 @@ void capturar_dados_gas_data()
     FILE *file;
 
     //abrindo arquivo
-    file = fopen("gas.data","a+");
+    file = fopen("banco_de_dados.data","a+");
 
     /*Preenchendo a matriz matriz_gas[100000][41] com os valores do arquivo.*/
     for(i = 0; i < 100000; i++)
     {
-        fscanf(file, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", &atributo_1, &atributo_2, &atributo_3, &atributo_4, &atributo_5, &atributo_6, &atributo_7, &atributo_8, &atributo_9, &atributo_10, &atributo_11, &atributo_12, &atributo_13, &atributo_14, &atributo_15, &atributo_16, &atributo_17, &atributo_18, &atributo_19, &atributo_20, &atributo_21, &atributo_22, &atributo_23, &atributo_24, &atributo_25, &atributo_26, &atributo_27, &atributo_28, &atributo_29, &atributo_30, &atributo_31, &atributo_32, &atributo_33, &atributo_34, &atributo_35, &atributo_36, &atributo_37, &atributo_38, &atributo_39, &atributo_40, &atributo_41);
+        fscanf(file, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", &atributo_0, &atributo_1, &atributo_2, &atributo_3, &atributo_4, &atributo_5, &atributo_6, &atributo_7, &atributo_8, &atributo_9, &atributo_10, &atributo_11, &atributo_12, &atributo_13, &atributo_14, &atributo_15, &atributo_16, &atributo_17, &atributo_18, &atributo_19, &atributo_20, &atributo_21, &atributo_22, &atributo_23, &atributo_24, &atributo_25, &atributo_26, &atributo_27, &atributo_28, &atributo_29, &atributo_30, &atributo_31, &atributo_32, &atributo_33, &atributo_34, &atributo_35, &atributo_36, &atributo_37, &atributo_38, &atributo_39, &atributo_40, &atributo_41, &atributo_42);
         //fprintf(arquivo, "formatos", var1, var2 ...);
         /*
         w[i][0] = id;
@@ -2015,49 +2276,49 @@ void capturar_dados_gas_data()
         w[i][12] = zero1;
         w[i][13] = zero2;
         */
-        matriz_gas[i][0] = atributo_1;
-        matriz_gas[i][1] = atributo_2;
-        matriz_gas[i][2] = atributo_3;
-        matriz_gas[i][3] = atributo_4;
-        matriz_gas[i][4] = atributo_5;
-        matriz_gas[i][5] = atributo_6;
-        matriz_gas[i][6] = atributo_7;
-        matriz_gas[i][7] = atributo_8;
-        matriz_gas[i][8] = atributo_9;
-        matriz_gas[i][9] = atributo_10;
-        matriz_gas[i][10] = atributo_11;
-        matriz_gas[i][11] = atributo_12;
-        matriz_gas[i][12] = atributo_13;
-        matriz_gas[i][13] = atributo_14;
-        matriz_gas[i][14] = atributo_15;
-        matriz_gas[i][15] = atributo_16;
-        matriz_gas[i][16] = atributo_17;
-        matriz_gas[i][17] = atributo_18;
-        matriz_gas[i][18] = atributo_19;
-        matriz_gas[i][19] = atributo_20;
-        matriz_gas[i][20] = atributo_21;
-        matriz_gas[i][21] = atributo_22;
-        matriz_gas[i][22] = atributo_23;
-        matriz_gas[i][23] = atributo_24;
-        matriz_gas[i][24] = atributo_25;
-        matriz_gas[i][25] = atributo_26;
-        matriz_gas[i][26] = atributo_27;
-        matriz_gas[i][27] = atributo_28;
-        matriz_gas[i][28] = atributo_29;
-        matriz_gas[i][29] = atributo_30;
-        matriz_gas[i][30] = atributo_31;
-        matriz_gas[i][31] = atributo_32;
-        matriz_gas[i][32] = atributo_33;
-        matriz_gas[i][33] = atributo_34;
-        matriz_gas[i][34] = atributo_35;
-        matriz_gas[i][35] = atributo_36;
-        matriz_gas[i][36] = atributo_37;
-        matriz_gas[i][37] = atributo_38;
-        matriz_gas[i][38] = atributo_39;
-        matriz_gas[i][39] = atributo_40;
-        matriz_gas[i][40] = atributo_41;
-
-
+        matriz_gas[i][0] = atributo_0;
+        matriz_gas[i][1] = atributo_1;
+        matriz_gas[i][2] = atributo_2;
+        matriz_gas[i][3] = atributo_3;
+        matriz_gas[i][4] = atributo_4;
+        matriz_gas[i][5] = atributo_5;
+        matriz_gas[i][6] = atributo_6;
+        matriz_gas[i][7] = atributo_7;
+        matriz_gas[i][8] = atributo_8;
+        matriz_gas[i][9] = atributo_9;
+        matriz_gas[i][10] = atributo_10;
+        matriz_gas[i][11] = atributo_11;
+        matriz_gas[i][12] = atributo_12;
+        matriz_gas[i][13] = atributo_13;
+        matriz_gas[i][14] = atributo_14;
+        matriz_gas[i][15] = atributo_15;
+        matriz_gas[i][16] = atributo_16;
+        matriz_gas[i][17] = atributo_17;
+        matriz_gas[i][18] = atributo_18;
+        matriz_gas[i][19] = atributo_19;
+        matriz_gas[i][20] = atributo_20;
+        matriz_gas[i][21] = atributo_21;
+        matriz_gas[i][22] = atributo_22;
+        matriz_gas[i][23] = atributo_23;
+        matriz_gas[i][24] = atributo_24;
+        matriz_gas[i][25] = atributo_25;
+        matriz_gas[i][26] = atributo_26;
+        matriz_gas[i][27] = atributo_27;
+        matriz_gas[i][28] = atributo_28;
+        matriz_gas[i][29] = atributo_29;
+        matriz_gas[i][30] = atributo_30;
+        matriz_gas[i][31] = atributo_31;
+        matriz_gas[i][32] = atributo_32;
+        matriz_gas[i][33] = atributo_33;
+        matriz_gas[i][34] = atributo_34;
+        matriz_gas[i][35] = atributo_35;
+        matriz_gas[i][36] = atributo_36;
+        matriz_gas[i][37] = atributo_37;
+        matriz_gas[i][38] = atributo_38;
+        matriz_gas[i][39] = atributo_39;
+        matriz_gas[i][40] = atributo_40;
+        matriz_gas[i][41] = atributo_41;
+        matriz_gas[i][42] = atributo_42;
 /*
         //Se o primeiro elemento correspondente ao id for zero, entrao o arquivo deve estar vazio.
         if(id == 0){
