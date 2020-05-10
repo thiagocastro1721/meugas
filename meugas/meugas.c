@@ -125,7 +125,7 @@ int main ()
 
 
     int i, j;
-    //duracao_atual = diferenca em dias entre a data inicial de utilizacao e a data atual de medicao.
+    //duracao_atual = diferenca em dias entre a data inicial de consumo e a data atual de medicao.
     int duracao_atual;
     int dia_da_semana;
 
@@ -229,6 +229,9 @@ int main ()
                     }
                 }
             }
+
+        //zerando duracao atual em dias a cada looping.
+        parametro_double[0] = 0;
 
         duracao_atual = captura_e_valida_dados_do_teclado(&dia_inicial, &mes_inicial, &ano_inicial, &dia_final, &mes_final, &ano_final, &dias_a_calcular, &opcao);
 
@@ -407,55 +410,56 @@ int main ()
             //se o usuario tiver uma balanca, entao mostra os dados abaixo
             if(parametro_int[3] == 1)
             {
+                //se duracao atual em dias for maior que 0 entao imprima
                 if(parametro_double[0] > 0)
                 {
-                                    printf("Duracao atual ------------------------------------- = ");
-                if(parametro_signed_long[6] > 0)
-                {
-                    if(parametro_signed_long[6] == 1)
+                    printf("Duracao atual ------------------------------------- = ");
+                    if(parametro_signed_long[6] > 0)
                     {
-                        printf("%li Ano ", parametro_signed_long[6]);
+                        if(parametro_signed_long[6] == 1)
+                        {
+                            printf("%li Ano ", parametro_signed_long[6]);
+                        }
+                        else
+                        {
+                            printf("%li Anos ", parametro_signed_long[6]);
+                        }
                     }
-                    else
+                    if(parametro_signed_long[5] > 0)
                     {
-                        printf("%li Anos ", parametro_signed_long[6]);
-                    }
-                }
-                if(parametro_signed_long[5] > 0)
-                {
-                    if(parametro_signed_long[5] == 1)
-                    {
-                        printf("%.li Mes ", parametro_signed_long[5]);
-                    }
-                    else
-                    {
-                        printf("%li Meses ", parametro_signed_long[5]);
-                    }
+                        if(parametro_signed_long[5] == 1)
+                        {
+                            printf("%.li Mes ", parametro_signed_long[5]);
+                        }
+                        else
+                        {
+                            printf("%li Meses ", parametro_signed_long[5]);
+                        }
 
-                }
-                if(parametro_signed_long[4] > 0)
-                {
-                    if(parametro_signed_long[4] == 1)
-                    {
-                        printf("%li Semana ", parametro_signed_long[4]);
                     }
-                    else
+                    if(parametro_signed_long[4] > 0)
                     {
-                        printf("%li Semanas ", parametro_signed_long[4]);
+                        if(parametro_signed_long[4] == 1)
+                        {
+                            printf("%li Semana ", parametro_signed_long[4]);
+                        }
+                        else
+                        {
+                            printf("%li Semanas ", parametro_signed_long[4]);
+                        }
                     }
-                }
-                if(parametro_signed_long[3] > 0)
-                {
-                    if(parametro_signed_long[3] == 1)
+                    if(parametro_signed_long[3] > 0)
                     {
-                        printf("%li Dia ", parametro_signed_long[3]);
+                        if(parametro_signed_long[3] == 1)
+                        {
+                            printf("%li Dia ", parametro_signed_long[3]);
+                        }
+                        else
+                        {
+                            printf("%li Dias ", parametro_signed_long[3]);
+                        }
                     }
-                    else
-                    {
-                        printf("%li Dias ", parametro_signed_long[3]);
-                    }
-                }
-                    printf("\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
+                        printf("\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
                 }
                 printf("Data da pesagem ----------------------------------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
                 printf("Peso inicial do conjunto -------------------------- = %.2lf Kg\n",  parametro_double[1]);
@@ -688,8 +692,15 @@ int main ()
                 }
                 printf("%02li/%02li/%li\n" ,parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16]);
             }
-
+            //se balanca igual a 0 e medicao igual a 1, entao duracao final em dias igual 0.
             if((parametro_int[3] == 0) && (parametro_int[1] == 1))
+            {
+                //parametro_int[2] = 0;
+                parametro_double[10] = 0;
+            }
+
+            //se o peso do gas for maior que zero, entao duracao final em dias igual a zero.
+            if(parametro_double[6] > 0)
             {
                 //parametro_int[2] = 0;
                 parametro_double[10] = 0;
@@ -767,12 +778,12 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
 
     if(*popcao == 1)
     {
-        //se medicao igual a 1, entao nao presisa ler do teclado o data inicial de utilizacao.
+        //se medicao igual a 1, entao nao presisa ler do teclado o data inicial de consumo.
         //vamos ler as informacoes da linha acima.
         //se pesagem for 1.
         if(parametro_int[1] == 1)
         {
-            printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
+            printf("Digite a data inicial de consumo. dd/mm/aaaa\n");
             scanf("%ld/%ld/%ld", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
 
             parametro_signed_long[7] = *pdia_inicial;
@@ -838,9 +849,9 @@ int captura_e_valida_dados_do_teclado(signed long *pdia_inicial, signed long *pm
         /*caso a primeira data seja maior que a segunda data*/
         while((*pano_inicial > *pano_final) || ((*pano_inicial == *pano_final) && (*pmes_inicial > *pmes_final)) || ((*pano_inicial == *pano_final) && (*pmes_inicial == *pmes_final) && (*pdia_inicial > *pdia_final)))
         {
-            printf("ERRO.\nData de pesagem anterior a data inicial de utilizacao.\n");
+            printf("ERRO.\nData de pesagem anterior a data inicial de consumo.\n");
 
-            printf("Digite a data inicial de utilizacao. dd/mm/aaaa\n");
+            printf("Digite a data inicial de consumo. dd/mm/aaaa\n");
             scanf("%li/%li/%li", &*pdia_inicial, &*pmes_inicial, &*pano_inicial);
 
             printf("Digite a data  de pesagem. dd/mm/aaaa\n");
@@ -2062,7 +2073,7 @@ void atualizar_banco_de_dados()
 
     fprintf(file,"%i,%i,%li,%li,%li,%li,%li,%li,%li,%lf,%li,%li,%li,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%li,%li,%li,%li,%i,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%li,%lf,%lf,%lf,%lf,%i\n", parametro_int[0], parametro_int[1], parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2], parametro_signed_long[3], parametro_signed_long[4], parametro_signed_long[5], parametro_signed_long[6], parametro_double[0], parametro_signed_long[7], parametro_signed_long[8], parametro_signed_long[9], parametro_double[1], parametro_double[2], parametro_double[3], parametro_double[4], parametro_double[5], parametro_double[6], parametro_double[7], parametro_double[8], parametro_double[9], parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12], parametro_signed_long[13], parametro_int[2], parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16], parametro_signed_long[17], parametro_signed_long[25], parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20], parametro_signed_long[21], parametro_signed_long[22], parametro_signed_long[23], parametro_signed_long[24], parametro_double[10], parametro_double[11], parametro_double[12], parametro_double[13], parametro_int[3]);
 
-    fprintf(file2,"*******************************************************************************\n");//linha inicial
+            fprintf(file2,"*******************************************************************************\n");//linha inicial
 
             fprintf(file2,"Id ------------------------------------------------ = %i\n", parametro_int[0]);
             fprintf(file2,"Pesagem ------------------------------------------- = %i\n", parametro_int[1]);
@@ -2079,55 +2090,56 @@ void atualizar_banco_de_dados()
             //se o usuario tiver uma balanca, entao mostra os dados abaixo
             if(parametro_int[3] == 1)
             {
-                fprintf(file2,"Duracao atual ------------------------------------- = ");
-                if(parametro_signed_long[6] > 0)
-                {
-                    if(parametro_signed_long[6] == 1)
-                    {
-                        fprintf(file2,"%li Ano ", parametro_signed_long[6]);
-                    }
-                    else
-                    {
-                        fprintf(file2,"%li Anos ", parametro_signed_long[6]);
-                    }
-                }
-                if(parametro_signed_long[5] > 0)
-                {
-                    if(parametro_signed_long[5] == 1)
-                    {
-                        fprintf(file2,"%.li Mes ", parametro_signed_long[5]);
-                    }
-                    else
-                    {
-                        fprintf(file2,"%li Meses ", parametro_signed_long[5]);
-                    }
-
-                }
-                if(parametro_signed_long[4] > 0)
-                {
-                    if(parametro_signed_long[4] == 1)
-                    {
-                        fprintf(file2,"%li Semana ", parametro_signed_long[4]);
-                    }
-                    else
-                    {
-                        fprintf(file2,"%li Semanas ", parametro_signed_long[4]);
-                    }
-                }
-                if(parametro_signed_long[3] > 0)
-                {
-                    if(parametro_signed_long[3] == 1)
-                    {
-                        fprintf(file2,"%li Dia ", parametro_signed_long[3]);
-                    }
-                    else
-                    {
-                        fprintf(file2,"%li Dias ", parametro_signed_long[3]);
-                    }
-                }
+                //se duracao atual em dias for maior que 0 entao imprima
                 if(parametro_double[0] > 0)
                 {
-                    fprintf(file2,"\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
+                    fprintf(file2,"Duracao atual ------------------------------------- = ");
+                    if(parametro_signed_long[6] > 0)
+                    {
+                        if(parametro_signed_long[6] == 1)
+                        {
+                            fprintf(file2,"%li Ano ", parametro_signed_long[6]);
+                        }
+                        else
+                        {
+                            fprintf(file2,"%li Anos ", parametro_signed_long[6]);
+                        }
+                    }
+                    if(parametro_signed_long[5] > 0)
+                    {
+                        if(parametro_signed_long[5] == 1)
+                        {
+                            fprintf(file2,"%.li Mes ", parametro_signed_long[5]);
+                        }
+                        else
+                        {
+                            fprintf(file2,"%li Meses ", parametro_signed_long[5]);
+                        }
+
+                    }
+                    if(parametro_signed_long[4] > 0)
+                    {
+                        if(parametro_signed_long[4] == 1)
+                        {
+                            fprintf(file2,"%li Semana ", parametro_signed_long[4]);
+                        }
+                        else
+                        {
+                            fprintf(file2,"%li Semanas ", parametro_signed_long[4]);
+                        }
+                    }
+                    if(parametro_signed_long[3] > 0)
+                    {
+                        if(parametro_signed_long[3] == 1)
+                        {
+                            fprintf(file2,"%li Dia ", parametro_signed_long[3]);
+                        }
+                        else
+                        {
+                            fprintf(file2,"%li Dias ", parametro_signed_long[3]);
+                        }
+                    }
+                        fprintf(file2,"\nDuracao atual ------------------------------------- = %.0lf Dias\n", parametro_double[0]);
                 }
                 fprintf(file2,"Data da pesagem ----------------------------------- = %02li/%02li/%li\n" , parametro_signed_long[0], parametro_signed_long[1], parametro_signed_long[2]);
                 fprintf(file2,"Peso inicial do conjunto -------------------------- = %.2lf Kg\n",  parametro_double[1]);
@@ -2138,39 +2150,42 @@ void atualizar_banco_de_dados()
                 fprintf(file2,"Peso atual do gas --------------------------------- = %.2lf Kg\n", parametro_double[6]);
                 fprintf(file2,"Consumo medio diario ------------------------------ = %.3lf kg/dia \n", parametro_double[7]);
                 fprintf(file2,"Percentual atual ---------------------------------- = %.2lf %%\n", parametro_double[8]);
-                fprintf(file2,"Dias restantes ------------------------------------ = %.0li Dias\n", (int)parametro_double[9]);
+                if(parametro_double[9] > 0)
+                {
+                    fprintf(file2,"Dias restantes ------------------------------------ = %i Dias\n", (int)parametro_double[9]);
 
-                fprintf(file2,"Previsao de termino de acordo com o consumo atual - = ");
-                 //dia da semana
-                if(parametro_signed_long[13] == 0)
-                {
-                    fprintf(file2,"Segunda-feira ");
+                    fprintf(file2,"Previsao de termino de acordo com o consumo atual - = ");
+                     //dia da semana
+                    if(parametro_signed_long[13] == 0)
+                    {
+                        fprintf(file2,"Segunda-feira ");
+                    }
+                    else if(parametro_signed_long[13] == 1)
+                    {
+                        fprintf(file2,"Terca-feira ");
+                    }
+                    else if(parametro_signed_long[13] == 2)
+                    {
+                        fprintf(file2,"Quarta-feira ");
+                    }
+                    else if(parametro_signed_long[13] == 3)
+                    {
+                        fprintf(file2,"Quinta-feira ");
+                    }
+                    else if(parametro_signed_long[13] == 4)
+                    {
+                        fprintf(file2,"Sexta-feira ");
+                    }
+                    else if(parametro_signed_long[13] == 5)
+                    {
+                        fprintf(file2,"Sabado ");
+                    }
+                    else if(parametro_signed_long[13] == 6)
+                    {
+                        fprintf(file2,"Domingo ");
+                    }
+                    fprintf(file2,"%02li/%02li/%li\n" ,parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12]);
                 }
-                else if(parametro_signed_long[13] == 1)
-                {
-                    fprintf(file2,"Terca-feira ");
-                }
-                else if(parametro_signed_long[13] == 2)
-                {
-                    fprintf(file2,"Quarta-feira ");
-                }
-                else if(parametro_signed_long[13] == 3)
-                {
-                    fprintf(file2,"Quinta-feira ");
-                }
-                else if(parametro_signed_long[13] == 4)
-                {
-                    fprintf(file2,"Sexta-feira ");
-                }
-                else if(parametro_signed_long[13] == 5)
-                {
-                    fprintf(file2,"Sabado ");
-                }
-                else if(parametro_signed_long[13] == 6)
-                {
-                    fprintf(file2,"Domingo ");
-                }
-                fprintf(file2,"%02li/%02li/%li\n" ,parametro_signed_long[10], parametro_signed_long[11], parametro_signed_long[12]);
             }
 
 
@@ -2218,7 +2233,7 @@ void atualizar_banco_de_dados()
 
                 fprintf(file2,"%02li/%02li/%li\n", parametro_signed_long[18], parametro_signed_long[19], parametro_signed_long[20]);
 
-                 fprintf(file2,"Duracao final ------------------------------------- = ");
+                fprintf(file2,"Duracao final ------------------------------------- = ");
                 if(parametro_signed_long[24] > 0)
                 {
                     if(parametro_signed_long[24] == 1)
@@ -2265,18 +2280,15 @@ void atualizar_banco_de_dados()
                     }
                 }
 
+                 //fprintf(file2,"Duracao final ------------ = %li Dias\n", duracao_atual);
+                fprintf(file2,"\nDuracao final ------------------------------------- = %.0lf Dias\n", parametro_double[10]);
 
-                 parametro_double[10] = parametro_double[0];
-                 //printf("Duracao final ------------ = %li Dias\n", duracao_atual);
-                 fprintf(file2,"\nDuracao final ------------------------------------- = %.0lf Dias\n", parametro_double[10]);
-
-                //calculando o gasto medio diario
-                parametro_double[13] = parametro_double[12]/parametro_double[10];
                 fprintf(file2,"Gasto medio diario -------------------------------- = R$ %.2lf\n" ,parametro_double[13]);
 
             }
 
             fprintf(file2,"Duracao media ------------------------------------- = %i Dias\n", parametro_int[2]);
+            //se balanca igual a 0 e pesagem igual a 1, entao zera duracao media para nao dar erro no calculo.
 
             //se a duracao media for maior que 0.
             if(parametro_int[2] > 0)
@@ -2314,11 +2326,11 @@ void atualizar_banco_de_dados()
                 fprintf(file2,"%02li/%02li/%li\n" ,parametro_signed_long[14], parametro_signed_long[15], parametro_signed_long[16]);
             }
 
-            //printf("\nmedia global em dias = %i\n", parametro_int[2]);
+            //fprintf(file2,"\nmedia global em dias = %i\n", parametro_int[2]);
             fprintf(file2,"*******************************************************************************\n");//linha final
 
 
-    /*fechando o arquivos*/
+    /*fechando os arquivos*/
     fclose(file);
     fclose(file2);
 
