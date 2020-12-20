@@ -1,0 +1,60 @@
+﻿git principais comandos
+
+ao iniciar escrita no git commit
+Insert
+
+ao terminar a escrita do comit
+esc
+
+sair do git commit ou do git log
+shift + z + z
+
+preparar um diretório
+git init
+
+sair do git log
+q
+
+historico de mudancas
+git log
+
+empurrar para nuvem
+git push
+
+remover manualmente index.lock ou usar o comando
+rm -f .git/index.lock
+
+SALVAR E SAIR DO VIM
+CTRL + Z + Z
+
+
+
+
+
+mudar branch
+
+git checkout <branch>
+
+exemplo
+
+git checkout calculadora_de_datas
+
+
+
+
+adicionar todos os aquivos
+
+git add --all
+
+
+
+Se aparecer
+Everything up-to-date
+
+está tudo ok.
+
+
+
+ver status e ver a branch atual
+
+git status
