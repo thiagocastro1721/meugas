@@ -1,0 +1,11 @@
+Se mudar de balança, então refaça todas as pesagens.
+Pode haver divergência entre as balanças.
+Exemplo prático:
+Na primeira balança, o registro + mangueira pesavam 0.3 kg.
+Na segunda balança, o registro + mangueira pesavam 0.5 kg.
+A minha primeira balaça quebrou, então eu comprei outra, 
+mas não refiz as pesagens e considerei o peso do registro + mangueira
+o mesmo da balança anterior, 0.3 kg. O resultado foi que o programa não
+conseguiu identifiucar que o gas havia acabado, acusando ainda 0.2 kg de 
+gas remanescente. Esses 0.2 kg é na verdade a divergência de peso entre as 
+balanças.  
