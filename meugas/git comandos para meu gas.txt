@@ -1,4 +1,11 @@
-caminho /c/users/thiago/desktop/git/meugas/meugas 
+credenciais
+user name: thiagocastro1721
+password: teamosamira17
+
+caminho
+ /c/users/thiago/desktop/git/meugas/meugas 
+
+comandos
 $ git add --all
 $ git commit -m "8.4"
 $ git push
