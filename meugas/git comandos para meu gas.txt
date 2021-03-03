@@ -1,0 +1,4 @@
+caminho /c/users/thiago/desktop/git/meugas/meugas 
+$ git add --all
+$ git commit -m "8.4"
+$ git push
